@@ -11,10 +11,10 @@ export const products: Product[] = [
     sizes: ["S", "M", "L", "XL"],
     colors: ["Black", "Brown"],
     category: "Leather",
-    image: "/src/images/D2.jpg",
+    image: " images/D2.jpg",
     images: [
-      "/src/images/D2.jpg",
-      "/src/images/D2_1.jpg"
+      " images/D2.jpg",
+      " images/D2_1.jpg"
     ],
     rating: 4.8,
     reviews: 124,
@@ -30,10 +30,10 @@ export const products: Product[] = [
     sizes: ["M", "L", "XL"],
     colors: ["Black", "Navy", "Olive"],
     category: "Casual",
-    image: "/src/images/D8.jpg",
+    image: " images/D8.jpg",
     images: [
-      "/src/images/D8.jpg",
-      "/src/images/D8_1.jpg"
+      " images/D8.jpg",
+      " images/D8_1.jpg"
     ],
     rating: 4.6,
     reviews: 89,
@@ -49,10 +49,10 @@ export const products: Product[] = [
     sizes: ["S", "M", "L", "XL", "XXL"],
     colors: ["Navy", "Charcoal", "Black"],
     category: "Formal",
-    image: "/src/images/D4.jpg",
+    image: " images/D4.jpg",
     images: [
-      "/src/images/D4.jpg",
-      "/src/images/D4_1.jpg"
+      " images/D4.jpg",
+      " images/D4_1.jpg"
     ],
     rating: 4.9,
     reviews: 156,
@@ -68,10 +68,10 @@ export const products: Product[] = [
     sizes: ["S", "M", "L", "XL"],
     colors: ["Blue", "Black", "Gray"],
     category: "Casual",
-    image: "/src/images/D6.jpg",
+    image: " images/D6.jpg",
     images: [
-      "/src/images/D6.jpg",
-      "/src/images/D6_1.jpg"
+      " images/D6.jpg",
+      " images/D6_1.jpg"
     ],
     rating: 4.5,
     reviews: 73,
@@ -87,10 +87,10 @@ export const products: Product[] = [
     sizes: ["M", "L", "XL", "XXL"],
     colors: ["Charcoal", "Navy", "Camel"],
     category: "Formal",
-    image: "/src/images/D5.jpg",
+    image: " images/D5.jpg",
     images: [
-      "/src/images/D5.jpg",
-      "/src/images/D5_1.jpg"
+      " images/D5.jpg",
+      " images/D5_1.jpg"
     ],
     rating: 4.7,
     reviews: 92,
@@ -106,10 +106,10 @@ export const products: Product[] = [
     sizes: ["S", "M", "L", "XL"],
     colors: ["Black", "Navy", "Gray"],
     category: "Sport",
-    image: "/src/images/D7_1.jpg",
+    image: " images/D7_1.jpg",
     images: [
-      "/src/images/D7_1.jpg",
-      "/src/images/D7.jpg",
+      " images/D7_1.jpg",
+      " images/D7.jpg",
     ],
     rating: 4.4,
     reviews: 67,
@@ -125,10 +125,10 @@ export const products: Product[] = [
     sizes: ["S", "M", "L", "XL"],
     colors: ["Tan", "Black", "Gray"],
     category: "Leather",
-    image: "/src/images/D10_1.jpg",
+    image: " images/D10_1.jpg",
     images: [
-      "/src/images/D3.jpg",
-      "/src/images/D3_1.jpg",
+      " images/D3.jpg",
+      " images/D3_1.jpg",
     ],
     rating: 4.6,
     reviews: 45,
@@ -144,10 +144,10 @@ export const products: Product[] = [
     sizes: ["M", "L", "XL", "XXL"],
     colors: ["Olive", "Navy", "Black"],
     category: "Casual",
-    image: "/src/images/D1_1.jpg",
+    image: " images/D1_1.jpg",
     images: [
-      "/src/images/D1_1.jpg",
-      "/src/images/D1.jpg",
+      " images/D1_1.jpg",
+      " images/D1.jpg",
     ],
     rating: 4.5,
     reviews: 83,

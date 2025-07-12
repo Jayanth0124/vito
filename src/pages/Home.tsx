@@ -14,10 +14,10 @@ const Home: React.FC = () => {
       {/* Hero Section */}
       <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
         <picture className="absolute inset-0 w-full h-full">
-          <source media="(min-width: 768px)" srcSet="/src/images/main.jpg" />
-          <source media="(max-width: 767px)" srcSet="/src/images/main_hero.jpg" />
+          <source media="(min-width: 768px)" srcSet="images/main.jpg" />
+          <source media="(max-width: 767px)" srcSet="images/main_hero.jpg" />
           <img
-            src="/src/images/main_hero.jpg"
+            src="images/main_hero.jpg"
             alt="Hero Background"
             className="w-full h-full object-cover"
           />
