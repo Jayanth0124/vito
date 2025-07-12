@@ -37,7 +37,7 @@ export const Header: React.FC = () => {
             <div className="flex items-center space-x-4">
               <div className="flex items-center space-x-2 text-xl font-bold text-gray-900">
                 <img
-                  src="images/logo.jpg"
+                  src="/images/logo.jpg"
                   alt="Vito Ginglies Logo"
                   className="w-8 h-8 object-contain"
                 />
