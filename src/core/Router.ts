@@ -7,10 +7,12 @@ export const initRouter = () => {
     sync: true,
     transitions: [{
       name: 'fade',
-      leave(data) {
+      // FIX: Added explicit 'any' type to 'data' parameter
+      leave(data: any) {
         return gsap.to(data.current.container, { opacity: 0 });
       },
-      enter(data) {
+      // FIX: Added explicit 'any' type to 'data' parameter
+      enter(data: any) {
         return gsap.from(data.next.container, { opacity: 0 });
       }
     }],

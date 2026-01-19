@@ -26,7 +26,8 @@ const initPage = (container: Document | HTMLElement = document) => {
 
   if (mobileToggle && navLinks) {
     // Clone to remove old event listeners to avoid duplication
-    const newToggle = mobileToggle.cloneNode(true);
+    // FIX: Cast to HTMLElement to access specific properties like parentNode style or addEventListener
+    const newToggle = mobileToggle.cloneNode(true) as HTMLElement;
     mobileToggle.parentNode?.replaceChild(newToggle, mobileToggle);
     
     newToggle.addEventListener('click', () => {
@@ -38,7 +39,7 @@ const initPage = (container: Document | HTMLElement = document) => {
     // Close menu when a link is clicked
     navLinks.querySelectorAll('a').forEach(link => {
       link.addEventListener('click', () => {
-        (newToggle as Element).classList.remove('active');
+        newToggle.classList.remove('active');
         navLinks.classList.remove('active');
         overlay?.classList.remove('active');
       });
@@ -127,10 +128,12 @@ barba.init({
   sync: true, 
   transitions: [{
     name: 'fade',
-    async leave(data) {
+    // FIX: Added type 'any' to data parameter
+    async leave(data: any) {
       return gsap.to(data.current.container, { opacity: 0, duration: 0.5 });
     },
-    enter(data) {
+    // FIX: Added type 'any' to data parameter
+    enter(data: any) {
       initPage(data.next.container);
       return gsap.from(data.next.container, { opacity: 0, duration: 0.5 });
     }

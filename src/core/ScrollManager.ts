@@ -10,7 +10,8 @@ export class ScrollManager {
   constructor() {
     this.lenis = new Lenis({
       duration: 1.8, // Heavy inertia
-      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      // FIX: Added type 'number' to 't'
+      easing: (t: number) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
       orientation: 'vertical',
       smoothWheel: true,
     });
@@ -20,7 +21,8 @@ export class ScrollManager {
 
   private init() {
     this.lenis.on('scroll', ScrollTrigger.update);
-    gsap.ticker.add((time) => {
+    // FIX: Added type 'number' to 'time'
+    gsap.ticker.add((time: number) => {
       this.lenis.raf(time * 1000);
     });
     gsap.ticker.lagSmoothing(0);
