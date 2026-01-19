@@ -1,14 +1,16 @@
 import { defineConfig } from 'vite';
+import { resolve } from 'path';
 
 export default defineConfig({
-  // Ensures proper building for multi-page apps
   build: {
     rollupOptions: {
       input: {
-        main: 'index.html',
-        shop: 'shop.html',
-        contact: 'contact.html'
-      }
-    }
-  }
+        // List every single HTML page here
+        main: resolve(__dirname, 'index.html'),
+        shop: resolve(__dirname, 'shop.html'),
+        about: resolve(__dirname, 'about.html'),
+        contact: resolve(__dirname, 'contact.html'),
+      },
+    },
+  },
 });
