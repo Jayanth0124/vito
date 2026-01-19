@@ -25,23 +25,22 @@ const initPage = (container: Document | HTMLElement = document) => {
   const overlay = document.querySelector('.overlay');
 
   if (mobileToggle && navLinks) {
-    // Clone to remove old event listeners to avoid duplication
-    // FIX: Cast to HTMLElement to access specific properties like parentNode style or addEventListener
     const newToggle = mobileToggle.cloneNode(true) as HTMLElement;
     mobileToggle.parentNode?.replaceChild(newToggle, mobileToggle);
     
     newToggle.addEventListener('click', () => {
       newToggle.classList.toggle('active');
       navLinks.classList.toggle('active');
-      overlay?.classList.toggle('active');
+      // REMOVED: overlay.classList.toggle('active'); -> This removes the fade!
     });
 
     // Close menu when a link is clicked
     navLinks.querySelectorAll('a').forEach(link => {
       link.addEventListener('click', () => {
+        // Just remove classes to close menu, let default link behavior happen
         newToggle.classList.remove('active');
         navLinks.classList.remove('active');
-        overlay?.classList.remove('active');
+        if (overlay) overlay.classList.remove('active');
       });
     });
   }
@@ -52,25 +51,21 @@ const initPage = (container: Document | HTMLElement = document) => {
     renderGrid(products, shopContainer as HTMLElement);
   }
 
-  // 3. Category Blocks Logic (The Big Black Squares)
+  // 3. Category Blocks Logic
   const catBlocks = container.querySelectorAll('.cat-block');
   if (catBlocks.length > 0 && shopContainer) {
     catBlocks.forEach((block: any) => {
       block.addEventListener('click', (e: Event) => {
         const target = e.currentTarget as HTMLElement;
         const category = target.dataset.filter;
-        
-        // Visual Feedback (Scroll to grid)
         shopContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
-
-        // Filter Logic
         const filteredProducts = category === 'all' ? products : products.filter(p => p.type === category);
         renderGrid(filteredProducts, shopContainer as HTMLElement);
       });
     });
   }
   
-  // 4. Simple Button Filter Logic (Fallback for footer links)
+  // 4. Simple Button Filter Logic
   const filters = container.querySelectorAll('.category-filter');
   if (filters.length > 0 && shopContainer) {
     filters.forEach((btn: any) => {
@@ -91,7 +86,9 @@ const initPage = (container: Document | HTMLElement = document) => {
     cartTrigger.onclick = (e) => {
       e.preventDefault();
       document.getElementById('cart-sidebar')?.classList.add('active');
+      // Keep overlay ONLY for cart
       document.querySelector('.overlay')?.classList.add('active');
+      
       // Close mobile menu if open
       document.querySelector('.nav-links')?.classList.remove('active');
       document.querySelector('.mobile-toggle')?.classList.remove('active');
@@ -128,11 +125,9 @@ barba.init({
   sync: true, 
   transitions: [{
     name: 'fade',
-    // FIX: Added type 'any' to data parameter
     async leave(data: any) {
       return gsap.to(data.current.container, { opacity: 0, duration: 0.5 });
     },
-    // FIX: Added type 'any' to data parameter
     enter(data: any) {
       initPage(data.next.container);
       return gsap.from(data.next.container, { opacity: 0, duration: 0.5 });

@@ -69,7 +69,8 @@ nav {
 .nav-links a.active-link { border-bottom: 1px solid var(--text); }
 
 /* Mobile Toggle */
-.mobile-toggle { display: none; cursor: pointer; z-index: 102; }
+/* UPDATED: Increased z-index to 170 so it stays above the overlay (150) and menu (160) */
+.mobile-toggle { display: none; cursor: pointer; z-index: 170; }
 .bar { width: 25px; height: 2px; background-color: var(--text); margin: 6px 0; transition: 0.4s; }
 
 /* ============================
@@ -81,12 +82,13 @@ nav {
   .mobile-toggle { display: block; }
 
   /* Nav Menu Slide-out */
+  /* UPDATED: Increased z-index to 160 so it sits ABOVE the overlay (150) */
   .nav-links {
     position: fixed; top: 0; right: 0; height: 100vh; width: 80%; max-width: 320px;
     background: var(--bg); flex-direction: column; justify-content: center; gap: 2rem;
     transform: translateX(100%); transition: transform 0.4s cubic-bezier(0.77, 0, 0.175, 1);
     border-left: 1px solid var(--border); box-shadow: -5px 0 15px rgba(0,0,0,0.1);
-    z-index: 101;
+    z-index: 160; 
   }
   .nav-links.active { transform: translateX(0); }
   .nav-links a { font-size: 1.2rem; margin: 0; }
@@ -199,4 +201,4 @@ footer { background-color: #fafafa; padding: 5rem 0 2rem 0; border-top: 1px soli
 .form-group { margin-bottom: 1.2rem; }
 .form-group label { display: block; margin-bottom: 0.5rem; text-transform: uppercase; font-size: 0.7rem; letter-spacing: 1px; color: #666; }
 .form-group input, .form-group textarea { width: 100%; padding: 0.8rem; border: 1px solid #ddd; font-family: inherit; background: #fafafa; }
-.no-print { display: block; }       
+.no-print { display: block; }
