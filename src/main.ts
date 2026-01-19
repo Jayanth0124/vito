@@ -14,12 +14,12 @@ window.cart = cart;
 new CheckoutManager(cart);
 
 // =========================================
-// Page Initialization Logic (Scoped)
+// Page Initialization Logic
 // =========================================
 const initPage = (container: Document | HTMLElement = document) => {
   initScroll();
   
-  // 1. Mobile Menu Toggle Logic
+  // 1. Mobile Menu Logic (Fixed Overlay Issue)
   const mobileToggle = document.querySelector('.mobile-toggle');
   const navLinks = document.querySelector('.nav-links');
   const overlay = document.querySelector('.overlay');
@@ -31,16 +31,13 @@ const initPage = (container: Document | HTMLElement = document) => {
     newToggle.addEventListener('click', () => {
       newToggle.classList.toggle('active');
       navLinks.classList.toggle('active');
-      // REMOVED: overlay.classList.toggle('active'); -> This removes the fade!
+      // No overlay toggle for menu to keep it clean, only menu slides in
     });
 
-    // Close menu when a link is clicked
     navLinks.querySelectorAll('a').forEach(link => {
       link.addEventListener('click', () => {
-        // Just remove classes to close menu, let default link behavior happen
         newToggle.classList.remove('active');
         navLinks.classList.remove('active');
-        if (overlay) overlay.classList.remove('active');
       });
     });
   }
@@ -49,9 +46,42 @@ const initPage = (container: Document | HTMLElement = document) => {
   const shopContainer = container.querySelector('#shop-container');
   if (shopContainer) {
     renderGrid(products, shopContainer as HTMLElement);
+    
+    // 3. Bind Grid Events (Quantity +/- and Add)
+    // We bind to the container to catch clicks on any card
+    shopContainer.addEventListener('click', (e: Event) => {
+      const target = e.target as HTMLElement;
+      
+      // Handle +/- Buttons
+      if (target.classList.contains('qty-btn-grid')) {
+        const action = target.dataset.action; // 'inc' or 'dec'
+        const input = target.parentElement?.querySelector('.qty-input') as HTMLInputElement;
+        
+        if (input) {
+          let val = parseInt(input.value);
+          if (action === 'inc') val++;
+          if (action === 'dec' && val > 1) val--;
+          input.value = val.toString();
+        }
+      }
+
+      // Handle Add To Cart Button
+      if (target.classList.contains('add-btn')) {
+        const id = target.dataset.id;
+        // Find the quantity input in the same card
+        const card = target.closest('.product-card');
+        const input = card?.querySelector('.qty-input') as HTMLInputElement;
+        const qty = input ? parseInt(input.value) : 1;
+        
+        const product = products.find(p => p.id === id);
+        if (product) {
+          cart.add(product, qty);
+        }
+      }
+    });
   }
 
-  // 3. Category Blocks Logic
+  // 4. Category Filter Logic
   const catBlocks = container.querySelectorAll('.cat-block');
   if (catBlocks.length > 0 && shopContainer) {
     catBlocks.forEach((block: any) => {
@@ -64,21 +94,6 @@ const initPage = (container: Document | HTMLElement = document) => {
       });
     });
   }
-  
-  // 4. Simple Button Filter Logic
-  const filters = container.querySelectorAll('.category-filter');
-  if (filters.length > 0 && shopContainer) {
-    filters.forEach((btn: any) => {
-      btn.addEventListener('click', (e: Event) => {
-        e.preventDefault();
-        const target = e.target as HTMLElement;
-        const category = target.dataset.filter;
-        const filteredProducts = category === 'all' ? products : products.filter(p => p.type === category);
-        renderGrid(filteredProducts, shopContainer as HTMLElement);
-        shopContainer.scrollIntoView({ behavior: 'smooth', block: 'start' });
-      });
-    });
-  }
 
   // 5. Cart & Modals
   const cartTrigger = document.getElementById('cart-trigger');
@@ -86,10 +101,8 @@ const initPage = (container: Document | HTMLElement = document) => {
     cartTrigger.onclick = (e) => {
       e.preventDefault();
       document.getElementById('cart-sidebar')?.classList.add('active');
-      // Keep overlay ONLY for cart
       document.querySelector('.overlay')?.classList.add('active');
       
-      // Close mobile menu if open
       document.querySelector('.nav-links')?.classList.remove('active');
       document.querySelector('.mobile-toggle')?.classList.remove('active');
     };
@@ -115,7 +128,14 @@ const renderGrid = (items: typeof products, container: HTMLElement) => {
           <h3 style="font-size: 1.1rem;">${p.name}</h3>
           <p style="color: #666; font-size: 0.85rem;">${p.type}</p>
         </div>
-        <button class="btn" style="padding: 0.5rem 1.5rem;" onclick='window.cart.add(${JSON.stringify(p)})'>Add</button>
+      </div>
+      <div class="product-actions">
+        <div class="qty-selector">
+           <button class="qty-btn qty-btn-grid" data-action="dec">-</button>
+           <input type="text" class="qty-input" value="1" readonly>
+           <button class="qty-btn qty-btn-grid" data-action="inc">+</button>
+        </div>
+        <button class="btn add-btn" data-id="${p.id}">Add</button>
       </div>
     </div>
   `).join('');

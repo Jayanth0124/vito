@@ -12,14 +12,19 @@ export class CartManager {
     this.render();
   }
 
-  add(product: Product) {
+  // Modified to accept a quantity
+  add(product: Product, qty: number = 1) {
     const existing = this.items.find(i => i.id === product.id);
-    if (existing) existing.quantity++;
-    else this.items.push({ ...product, quantity: 1 });
+    if (existing) existing.quantity += qty;
+    else this.items.push({ ...product, quantity: qty });
     
     this.save();
     this.render();
-    this.showNotification(`Added ${product.name}`);
+    this.showNotification(`Added ${qty} x ${product.name}`);
+    
+    // Open cart automatically
+    document.getElementById('cart-sidebar')?.classList.add('active');
+    document.querySelector('.overlay')?.classList.add('active');
   }
 
   remove(id: string) {
@@ -28,9 +33,23 @@ export class CartManager {
     this.render();
   }
 
+  // New method for +/- buttons in Cart
+  updateQuantity(id: string, change: number) {
+    const item = this.items.find(i => i.id === id);
+    if (!item) return;
+
+    item.quantity += change;
+    if (item.quantity <= 0) {
+      this.remove(id);
+    } else {
+      this.save();
+      this.render();
+    }
+  }
+
   private save() {
     localStorage.setItem('vito_cart', JSON.stringify(this.items));
-    document.dispatchEvent(new Event('cart-updated')); // Notify Checkout
+    document.dispatchEvent(new Event('cart-updated')); 
   }
 
   private load() {
@@ -52,13 +71,25 @@ export class CartManager {
     if (countEl) countEl.innerText = this.items.reduce((a,b) => a + b.quantity, 0).toString();
     
     if (listEl) {
+      if (this.items.length === 0) {
+        listEl.innerHTML = '<p style="text-align:center; margin-top:2rem; color:#888;">Cart is empty.</p>';
+        return;
+      }
+
       listEl.innerHTML = this.items.map(item => `
-        <div style="display:flex; justify-content:space-between; margin-bottom:1rem; border-bottom:1px solid #eee; padding-bottom:1rem;">
-          <div>
-            <h4>${item.name}</h4>
-            <small>${item.type} x ${item.quantity}</small>
+        <div class="cart-item">
+          <div style="flex:1;">
+            <h4 style="font-size: 0.9rem;">${item.name}</h4>
+            <p style="font-size: 0.8rem; color: #666;">${item.type}</p>
           </div>
-          <button onclick="window.cart.remove('${item.id}')" style="background:none; border:none; cursor:pointer;">✕</button>
+          <div style="display:flex; align-items:center;">
+             <div class="cart-qty-ctrl">
+                <button class="qty-btn" onclick="window.cart.updateQuantity('${item.id}', -1)">-</button>
+                <span style="padding:0 8px; font-size:0.9rem;">${item.quantity}</span>
+                <button class="qty-btn" onclick="window.cart.updateQuantity('${item.id}', 1)">+</button>
+             </div>
+             <button class="cart-remove" onclick="window.cart.remove('${item.id}')">Remove</button>
+          </div>
         </div>
       `).join('');
     }
