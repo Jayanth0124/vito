@@ -1,0 +1,9 @@
+@media print {
+  body * { visibility: hidden; }
+  #checkout-modal, #checkout-modal * { visibility: visible; }
+  #checkout-modal {
+    position: absolute; left: 0; top: 0; width: 100%; height: auto;
+    transform: none !important; padding: 0;
+  }
+  .no-print { display: none !important; }
+}

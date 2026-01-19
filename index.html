@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Vito Ginglies | Premium Jackets</title>
+  <link rel="stylesheet" href="./src/styles/main.css" />
+  <link rel="stylesheet" href="./src/styles/print.css" />
+</head>
+<body data-barba="wrapper">
+
+  <nav>
+    <a href="index.html" class="nav-brand">
+      <img src="https://via.placeholder.com/50x50/000000/ffffff?text=V" alt="VG">
+      <span>VITO GINGLIES</span>
+    </a>
+    
+    <div class="mobile-toggle">
+      <div class="bar"></div>
+      <div class="bar"></div>
+      <div class="bar"></div>
+    </div>
+
+    <div class="nav-links">
+      <a href="index.html" class="active-link">Home</a>
+      <a href="about.html">Our Story</a>
+      <a href="shop.html">Collection</a>
+      <a href="contact.html">Contact</a>
+      <a href="#" id="cart-trigger">CART (<span id="cart-count">0</span>)</a>
+    </div>
+  </nav>
+
+  <div id="toast">Item added to cart</div>
+
+  <div class="overlay"></div>
+  <aside id="cart-sidebar" class="modal-panel">
+    <div style="display:flex; justify-content:space-between; align-items:center;">
+      <h2>Your Cart</h2>
+      <button class="btn-close-cart" style="background:none; border:none; cursor:pointer; font-size: 1.5rem;">&times;</button>
+    </div>
+    <div id="cart-list" style="flex:1; margin-top:2rem;"></div>
+    <button id="trigger-checkout" class="btn" style="width:100%; text-align:center; background: #000; color: #fff;">Checkout</button>
+  </aside>
+
+  <section id="checkout-modal" class="modal-panel" style="width: 600px; z-index: 300;">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:2rem;">
+      <h2>Finalize Order</h2>
+      <button id="close-checkout" class="no-print" style="border:none; background:none; cursor:pointer;">CLOSE</button>
+    </div>
+    <div style="margin-bottom: 2rem; border-bottom: 1px solid #eee; padding-bottom: 1rem;">
+      <strong>Order #: <span id="order-id-display"></span></strong>
+    </div>
+    <form id="checkout-form">
+      <div class="form-group"><label>Full Name</label><input type="text" id="c-name" required placeholder="John Doe"></div>
+      <div class="form-group"><label>Phone Number</label><input type="tel" id="c-phone" required placeholder="+1 234..."></div>
+      <div class="form-group"><label>Alternative Phone (Optional)</label><input type="tel" id="c-alt-phone"></div>
+      <div class="form-group"><label>Shipping Address</label><textarea id="c-address" rows="3" required></textarea></div>
+      <div style="background:#f9f9f9; padding:1rem; margin-bottom:2rem;">
+        <h4>Order Summary</h4>
+        <div id="checkout-summary"></div>
+      </div>
+      <button type="submit" class="btn no-print" style="width:100%; background:black; color:white; margin-bottom:1rem;">Send Order via WhatsApp</button>
+      <button type="button" id="print-order" class="btn no-print" style="width:100%;">Print Order Receipt</button>
+    </form>
+  </section>
+
+  <main data-barba="container" data-barba-namespace="home">
+    
+    <header class="hero">
+      <h1 data-speed="0.5">Vito Ginglies</h1>
+      <p style="margin: 2rem 0; letter-spacing: 2px; text-transform: uppercase; font-size: 0.9rem;">
+        Premium Menswear • Italian Craftsmanship
+      </p>
+      <div>
+        <a href="shop.html" class="btn">Pick Your Style</a>
+        <a href="contact.html" class="btn" style="margin-left: 1rem; border-color: transparent;">Contact Us</a>
+      </div>
+    </header>
+
+    <section class="container">
+      <div style="display:flex; flex-wrap: wrap; gap:4rem; align-items:center;">
+        <div style="flex:1; min-width: 300px;">
+          <h2>The Weight of Quality</h2>
+          <p style="margin-top:2rem; font-size: 1.1rem; color: #333;">
+            We do not sell jackets. We sell armor for the modern world. 
+            Experience inertia-based fabrics that drape with purpose and elegance.
+          </p>
+          <a href="about.html" style="margin-top:2rem; display:inline-block; color:black; text-decoration: underline;">Read Our Story</a>
+        </div>
+        <div style="flex:1; min-width: 300px; height:500px; background:#f0f0f0; overflow: hidden;" data-speed="0.2">
+          <img src="https://placehold.co/600x800/eee/111?text=Craftsmanship" style="width:100%; height:100%; object-fit:cover;">
+        </div>
+      </div>
+    </section>
+
+    <section class="container">
+      <h2 style="margin-bottom: 4rem; text-align:center;">Curated Collections</h2>
+      <div class="product-grid" id="shop-container">
+        </div>
+      <div style="text-align: center; margin-top: 4rem;">
+        <a href="shop.html" class="btn">View All Products</a>
+      </div>
+    </section>
+
+    <section class="container" style="background-color: #fff;">
+      <h2 style="text-align: center;">Client Voices</h2>
+      <div class="testimonials-grid">
+        <div class="testimonial-card">
+          <p class="testimonial-text">"The fabric weight is unlike anything I've worn. It feels substantial yet incredibly soft."</p>
+          <p class="testimonial-author">— James C., London</p>
+        </div>
+        <div class="testimonial-card">
+          <p class="testimonial-text">"Minimalism done right. The fit of the Bomber Alpha is simply architectural."</p>
+          <p class="testimonial-author">— Alessandro M., Milan</p>
+        </div>
+        <div class="testimonial-card">
+          <p class="testimonial-text">"Ordering via WhatsApp felt personal and premium. The packaging was exquisite."</p>
+          <p class="testimonial-author">— Rohan K., Dubai</p>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <div class="container">
+        <div class="footer-top">
+          <div class="footer-col">
+            <img src="https://via.placeholder.com/150x40/fafafa/000000?text=VITO+GINGLIES" alt="Vito Ginglies" style="margin-bottom: 1rem;">
+            <p class="footer-desc">
+              Designing dreams with functional spaces that reflect personality and lifestyle. Premium men's jackets tailored for the bold.
+            </p>
+            <div class="social-links">
+              <a href="#">IG</a>
+              <a href="#">FB</a>
+              <a href="#">WA</a>
+            </div>
+          </div>
+
+          <div class="footer-col">
+            <h4>Collections</h4>
+            <ul>
+              <li><a href="shop.html">Formal Jackets</a></li>
+              <li><a href="shop.html">Bomber Jackets</a></li>
+              <li><a href="shop.html">Sporty Editions</a></li>
+              <li><a href="shop.html">Casual Wear</a></li>
+            </ul>
+          </div>
+
+          <div class="footer-col">
+            <h4>Company</h4>
+            <ul>
+              <li><a href="about.html">About Us</a></li>
+              <li><a href="contact.html">Contact</a></li>
+              <li><a href="#">Terms & Conditions</a></li>
+              <li><a href="#">Privacy Policy</a></li>
+            </ul>
+          </div>
+
+          <div class="footer-col">
+            <h4>Contact Info</h4>
+            <div class="footer-contact-item">
+              <span>📞</span> <span>+91 94929 06981</span>
+            </div>
+            <div class="footer-contact-item">
+              <span>✉️</span> <span>info@vitoginglies.com</span>
+            </div>
+            <div class="footer-contact-item">
+              <span>📍</span> <span>KMK Elite Durga Nagar,<br>Hyderabad, Telangana</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="footer-bottom">
+          <p>&copy; 2024 Vito Ginglies. All Rights Reserved.</p>
+          <p>Designed for Excellence.</p>
+        </div>
+      </div>
+    </footer>
+
+  </main>
+
+  <script type="module" src="/src/main.ts"></script>
+</body>
+</html>

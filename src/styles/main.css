@@ -1,0 +1,202 @@
+@import url('https://fonts.googleapis.com/css2?family=Italiana&family=Manrope:wght@300;400;600&display=swap');
+
+:root {
+  --bg: #ffffff;
+  --text: #111111;
+  --accent: #f4f4f4;
+  --border: #e5e5e5;
+  --font-display: 'Italiana', serif;
+  --font-body: 'Manrope', sans-serif;
+}
+
+* { margin: 0; padding: 0; box-sizing: border-box; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Typography - Adjusted Clamp for Mobile */
+h1, h2, h3, h4 { font-family: var(--font-display); font-weight: 400; text-transform: uppercase; }
+h1 { font-size: clamp(3rem, 10vw, 6rem); line-height: 1; }
+h2 { font-size: clamp(1.8rem, 5vw, 3.5rem); }
+p { line-height: 1.6; color: #444; font-size: 1rem; }
+
+.btn {
+  display: inline-block; padding: 1rem 2.5rem; border: 1px solid var(--text);
+  text-transform: uppercase; text-decoration: none; color: var(--text);
+  transition: all 0.4s ease; cursor: pointer; background: transparent; 
+  letter-spacing: 1px; font-size: 0.85rem; text-align: center;
+}
+.btn:hover { background: var(--text); color: var(--bg); }
+
+/* Layout */
+.container { width: 100%; max-width: 1400px; margin: 0 auto; padding: 0 1.5rem; }
+section { padding: 8vh 0; }
+
+/* ============================
+   HEADER & NAVIGATION 
+   ============================ */
+nav {
+  position: fixed; top: 0; width: 100%; height: 80px;
+  padding: 0 2rem; display: flex; justify-content: space-between; align-items: center;
+  z-index: 100; background-color: var(--bg); border-bottom: 1px solid var(--border);
+}
+
+.nav-brand {
+  display: flex; align-items: center; gap: 12px; text-decoration: none; color: var(--text);
+}
+.nav-brand img { height: 35px; width: auto; display: block; }
+.nav-brand span { 
+  font-family: var(--font-display); font-size: 1.2rem; letter-spacing: 1px; 
+  white-space: nowrap; font-weight: 600; text-transform: uppercase;
+}
+
+/* Desktop Nav Links */
+.nav-links { display: flex; align-items: center; gap: 2.5rem; }
+.nav-links a { 
+  color: var(--text); text-decoration: none; text-transform: uppercase; 
+  font-size: 0.8rem; letter-spacing: 1px; font-weight: 500; position: relative;
+}
+.nav-links a::after {
+  content: ''; position: absolute; bottom: -5px; left: 0; width: 0%; height: 1px; 
+  background: var(--text); transition: width 0.3s ease;
+}
+.nav-links a:hover::after { width: 100%; }
+.nav-links a.active-link { border-bottom: 1px solid var(--text); }
+
+/* Mobile Toggle */
+.mobile-toggle { display: none; cursor: pointer; z-index: 102; }
+.bar { width: 25px; height: 2px; background-color: var(--text); margin: 6px 0; transition: 0.4s; }
+
+/* ============================
+   RESPONSIVE BREAKPOINTS (FIXED)
+   ============================ */
+/* Tablet & Mobile (< 900px) - Triggers Vertical Stack Sooner */
+@media (max-width: 900px) {
+  nav { padding: 0 1.5rem; }
+  .mobile-toggle { display: block; }
+
+  /* Nav Menu Slide-out */
+  .nav-links {
+    position: fixed; top: 0; right: 0; height: 100vh; width: 80%; max-width: 320px;
+    background: var(--bg); flex-direction: column; justify-content: center; gap: 2rem;
+    transform: translateX(100%); transition: transform 0.4s cubic-bezier(0.77, 0, 0.175, 1);
+    border-left: 1px solid var(--border); box-shadow: -5px 0 15px rgba(0,0,0,0.1);
+    z-index: 101;
+  }
+  .nav-links.active { transform: translateX(0); }
+  .nav-links a { font-size: 1.2rem; margin: 0; }
+
+  /* Hero Adjustments */
+  .hero h1 { font-size: 3.5rem; margin-bottom: 1rem; } 
+  
+  /* Footer - Force Single Column */
+  .footer-top { grid-template-columns: 1fr !important; gap: 3rem; text-align: left; }
+  footer { padding: 4rem 0 2rem 0; }
+  
+  /* Category Blocks - Stack */
+  .category-banner-grid { grid-template-columns: 1fr !important; gap: 1rem; }
+  .cat-block { height: 200px; font-size: 1.5rem; }
+
+  /* Product Grid - 1 Column */
+  .product-grid { grid-template-columns: 1fr !important; gap: 2.5rem; }
+}
+
+/* Small Mobile (< 480px) */
+@media (max-width: 480px) {
+  .nav-brand span { font-size: 1rem; } 
+  .hero h1 { font-size: 2.8rem; }
+  .container { padding: 0 1.2rem; }
+  .modal-panel { width: 100%; }
+}
+
+/* ============================
+   HERO & GENERAL
+   ============================ */
+.hero {
+  min-height: 100vh; display: flex; align-items: center; justify-content: center;
+  text-align: center; flex-direction: column; padding-top: 80px;
+}
+
+/* ============================
+   CATEGORY BLOCKS
+   ============================ */
+.category-banner-grid {
+  display: grid; grid-template-columns: repeat(4, 1fr); gap: 1rem; margin-bottom: 4rem; width: 100%;
+}
+.cat-block {
+  height: 400px; background: #222; color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-display); font-size: 2rem; text-transform: uppercase;
+  cursor: pointer; transition: all 0.4s ease; position: relative; overflow: hidden;
+}
+.cat-block:hover { background: #000; transform: translateY(-5px); }
+.cat-block span { z-index: 2; position: relative; }
+
+/* ============================
+   PRODUCT GRID
+   ============================ */
+.product-grid {
+  display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 3rem 2rem;
+}
+.product-card img { width: 100%; height: 450px; object-fit: cover; background: #eee; }
+.product-info { padding-top: 1.2rem; display: flex; justify-content: space-between; align-items: flex-start; }
+
+/* ============================
+   TESTIMONIALS SECTION
+   ============================ */
+.testimonials-grid {
+  display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 2rem; margin-top: 4rem;
+}
+.testimonial-card {
+  padding: 2.5rem 1.5rem; border: 1px solid var(--border); background: #fafafa; text-align: center;
+}
+.testimonial-text {
+  font-family: var(--font-display); font-size: 1.3rem; margin-bottom: 1.5rem; color: var(--text);
+}
+.testimonial-author {
+  font-size: 0.8rem; text-transform: uppercase; letter-spacing: 1px; color: #666;
+}
+
+/* ============================
+   UI ELEMENTS
+   ============================ */
+#toast {
+  position: fixed; bottom: 2rem; right: 2rem; background: var(--text); color: white;
+  padding: 1rem 2rem; transform: translateY(150px); transition: transform 0.3s ease; z-index: 200;
+}
+#toast.show { transform: translateY(0); }
+
+.overlay {
+  position: fixed; top: 0; right: 0; width: 100%; height: 100%;
+  background: rgba(0,0,0,0.4); z-index: 150; opacity: 0; pointer-events: none; transition: 0.3s;
+}
+.overlay.active { opacity: 1; pointer-events: all; }
+
+.modal-panel {
+  position: fixed; top: 0; right: 0; width: 450px; height: 100vh;
+  background: white; transform: translateX(100%); transition: transform 0.6s cubic-bezier(0.2, 1, 0.3, 1);
+  z-index: 200; padding: 2.5rem; display: flex; flex-direction: column;
+  border-left: 1px solid var(--border); overflow-y: auto;
+}
+.modal-panel.active { transform: translateX(0); }
+
+/* Footer Default (Desktop) */
+footer { background-color: #fafafa; padding: 5rem 0 2rem 0; border-top: 1px solid var(--border); margin-top: 5rem; }
+.footer-top { display: grid; grid-template-columns: 1.5fr 1fr 1fr 1.2fr; gap: 3rem; padding-bottom: 3rem; border-bottom: 1px solid var(--border); }
+.footer-col h4 { font-size: 1rem; margin-bottom: 1.5rem; letter-spacing: 1px; }
+.footer-col ul { list-style: none; }
+.footer-col ul li { margin-bottom: 0.8rem; }
+.footer-col ul li a { text-decoration: none; color: #555; font-size: 0.9rem; transition: color 0.3s; }
+.footer-col ul li a:hover { color: #000; }
+.footer-bottom { padding-top: 2rem; text-align: center; font-size: 0.8rem; color: #888; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
+
+/* Styles for Forms (Checkout) */
+.form-group { margin-bottom: 1.2rem; }
+.form-group label { display: block; margin-bottom: 0.5rem; text-transform: uppercase; font-size: 0.7rem; letter-spacing: 1px; color: #666; }
+.form-group input, .form-group textarea { width: 100%; padding: 0.8rem; border: 1px solid #ddd; font-family: inherit; background: #fafafa; }
+.no-print { display: block; }       

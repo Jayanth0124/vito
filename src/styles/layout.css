@@ -1,0 +1,18 @@
+.container { max-width: 1440px; margin: 0 auto; padding: 0 5vw; }
+.section { padding: 12vh 0; }
+
+nav {
+  position: fixed; top: 0; left: 0; width: 100%;
+  padding: 2rem 3rem; display: flex; justify-content: space-between;
+  z-index: 100; mix-blend-mode: difference; color: white;
+}
+.nav-links a { margin-left: 2rem; text-decoration: none; color: white; text-transform: uppercase; letter-spacing: 1px; }
+
+#cart-modal {
+  position: fixed; top: 0; right: 0; width: 450px; height: 100vh;
+  background: white; z-index: 200; transform: translateX(100%);
+  transition: transform 0.8s cubic-bezier(0.16, 1, 0.3, 1);
+  padding: 3rem; border-left: 1px solid #eee;
+  display: flex; flex-direction: column;
+}
+#cart-modal.active { transform: translateX(0); }

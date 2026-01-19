@@ -1,0 +1,19 @@
+:root {
+  --bg: #ffffff;
+  --text: #0a0a0a;
+  --font-head: 'Italiana', serif;
+  --font-body: 'Manrope', sans-serif;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  overflow-x: hidden;
+}
+
+h1, h2, h3 { font-family: var(--font-head); font-weight: 400; text-transform: uppercase; }
+button { cursor: pointer; border: none; background: none; font-family: inherit; }
