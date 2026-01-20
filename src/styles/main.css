@@ -26,11 +26,21 @@ h1 { font-size: clamp(3rem, 10vw, 6rem); line-height: 1; }
 h2 { font-size: clamp(1.8rem, 5vw, 3.5rem); }
 p { line-height: 1.6; color: #444; font-size: 1rem; }
 
+/* Global Button Style */
 .btn {
-  display: inline-block; padding: 1rem 2.5rem; border: 1px solid var(--text);
-  text-transform: uppercase; text-decoration: none; color: var(--text);
-  transition: all 0.4s ease; cursor: pointer; background: transparent; 
-  letter-spacing: 1px; font-size: 0.85rem; text-align: center;
+  display: inline-block; 
+  padding: 1rem 2.5rem; 
+  border: 1px solid var(--text);
+  text-transform: uppercase; 
+  text-decoration: none; 
+  color: var(--text);
+  transition: all 0.4s ease; 
+  cursor: pointer; 
+  background: transparent; 
+  letter-spacing: 1px; 
+  font-size: 0.85rem; 
+  text-align: center;
+  min-width: 160px; /* Ensure buttons have presence */
 }
 .btn:hover { background: var(--text); color: var(--bg); }
 
@@ -173,12 +183,11 @@ nav {
 /* ============================
    TESTIMONIALS (REDESIGNED)
    ============================ */
-/* NEW DIVIDER STYLE */
 .section-divider {
   width: 50px; 
   height: 1px; 
   background-color: var(--text); 
-  margin: 3rem auto; /* Spacing above/below the line */
+  margin: 3rem auto; 
   opacity: 0.3;
 }
 
@@ -186,7 +195,7 @@ nav {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
   gap: 2rem;
-  margin-top: 2rem; /* Adjusted since we have a divider now */
+  margin-top: 2rem;
 }
 
 .testimonial-card {
@@ -207,44 +216,10 @@ nav {
   transform: translateY(-5px);
 }
 
-.stars {
-  color: var(--gold);
-  font-size: 1.2rem;
-  letter-spacing: 2px;
-}
-
-.testimonial-text {
-  font-family: var(--font-body);
-  font-size: 1rem;
-  line-height: 1.7;
-  color: #444;
-  font-style: normal;
-  margin-bottom: 1rem;
-}
-
-.testimonial-profile {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-  margin-top: auto;
-  border-top: 1px solid #f9f9f9;
-  padding-top: 1.5rem;
-}
-
-.profile-avatar {
-  width: 45px;
-  height: 45px;
-  background-color: #f4f4f4;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-family: var(--font-display);
-  font-weight: bold;
-  font-size: 1.2rem;
-  color: var(--text);
-}
-
+.stars { color: var(--gold); font-size: 1.2rem; letter-spacing: 2px; }
+.testimonial-text { font-family: var(--font-body); font-size: 1rem; line-height: 1.7; color: #444; margin-bottom: 1rem; }
+.testimonial-profile { display: flex; align-items: center; gap: 1rem; margin-top: auto; border-top: 1px solid #f9f9f9; padding-top: 1.5rem; }
+.profile-avatar { width: 45px; height: 45px; background-color: #f4f4f4; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: var(--font-display); font-weight: bold; font-size: 1.2rem; color: var(--text); }
 .profile-info { display: flex; flex-direction: column; }
 .profile-name { font-family: var(--font-display); font-size: 1rem; color: var(--text); font-weight: 600; }
 .profile-status { font-size: 0.75rem; color: #888; text-transform: uppercase; letter-spacing: 1px; }
@@ -265,9 +240,88 @@ nav {
 .cart-qty-ctrl { display: flex; align-items: center; gap: 5px; border: 1px solid #eee; }
 .cart-remove { font-size: 0.8rem; color: #888; text-decoration: underline; background: none; border: none; cursor: pointer; margin-left: 1rem; }
 
-footer { background-color: #fafafa; padding: 5rem 0 2rem 0; border-top: 1px solid var(--border); margin-top: 5rem; }
-.footer-top { display: grid; grid-template-columns: 1.5fr 1fr 1fr 1.2fr; gap: 3rem; padding-bottom: 3rem; border-bottom: 1px solid var(--border); }
-.footer-bottom { padding-top: 2rem; text-align: center; font-size: 0.8rem; color: #888; display: flex; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
+/* ============================
+   FOOTER (FIXED & IMPROVED)
+   ============================ */
+footer { 
+  background-color: #fcfcfc; /* Slightly off-white */
+  padding: 6rem 0 2rem 0; 
+  border-top: 1px solid var(--border); 
+  margin-top: 6rem; 
+}
+
+.footer-top { 
+  display: grid; 
+  grid-template-columns: 1.5fr 1fr 1fr 1.2fr; 
+  gap: 4rem; 
+  padding-bottom: 4rem; 
+  border-bottom: 1px solid var(--border); 
+}
+
+.footer-col h4 { 
+  font-size: 0.9rem; 
+  margin-bottom: 1.5rem; 
+  letter-spacing: 1.5px; 
+  color: #000;
+  font-weight: 600;
+}
+
+.footer-col ul { 
+  list-style: none; 
+  padding: 0; 
+  margin: 0; 
+}
+
+.footer-col ul li { 
+  margin-bottom: 1rem; 
+}
+
+.footer-col ul li a { 
+  text-decoration: none; 
+  color: #666; 
+  font-size: 0.95rem; 
+  transition: color 0.3s;
+  display: inline-block;
+  position: relative;
+}
+
+/* Removing any weird underlines and adding simple hover */
+.footer-col ul li a::after {
+  content: none; /* Force remove shared nav effects */
+}
+
+.footer-col ul li a:hover { 
+  color: #000; 
+  transform: translateX(5px); /* Subtle nudge effect */
+}
+
+.footer-desc {
+  color: #666;
+  font-size: 0.9rem;
+  line-height: 1.6;
+  margin-top: 1rem;
+  max-width: 280px;
+}
+
+.footer-contact-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 10px;
+  margin-bottom: 1rem;
+  color: #666;
+  font-size: 0.95rem;
+}
+
+.footer-bottom { 
+  padding-top: 2rem; 
+  text-align: center; 
+  font-size: 0.8rem; 
+  color: #888; 
+  display: flex; 
+  justify-content: space-between; 
+  flex-wrap: wrap; 
+  gap: 1rem; 
+}
 
 .form-group { margin-bottom: 1.2rem; }
 .form-group label { display: block; margin-bottom: 0.5rem; text-transform: uppercase; font-size: 0.7rem; letter-spacing: 1px; color: #666; }
