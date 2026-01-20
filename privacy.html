@@ -34,6 +34,28 @@
     <button id="trigger-checkout" class="btn" style="width:100%; text-align:center; background: #000; color: #fff;">Checkout</button>
   </aside>
 
+  <section id="checkout-modal" class="modal-panel" style="width: 600px; z-index: 300;">
+    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:2rem;">
+      <h2>Finalize Order</h2>
+      <button id="close-checkout" class="no-print" style="border:none; background:none; cursor:pointer;">CLOSE</button>
+    </div>
+    <div style="margin-bottom: 2rem; border-bottom: 1px solid #eee; padding-bottom: 1rem;">
+      <strong>Order #: <span id="order-id-display"></span></strong>
+    </div>
+    <form id="checkout-form">
+      <div class="form-group"><label>Full Name</label><input type="text" id="c-name" required placeholder="John Doe"></div>
+      <div class="form-group"><label>Phone Number</label><input type="tel" id="c-phone" required placeholder="+1 234..."></div>
+      <div class="form-group"><label>Alternative Phone (Optional)</label><input type="tel" id="c-alt-phone"></div>
+      <div class="form-group"><label>Shipping Address</label><textarea id="c-address" rows="3" required></textarea></div>
+      <div style="background:#f9f9f9; padding:1rem; margin-bottom:2rem;">
+        <h4>Order Summary</h4>
+        <div id="checkout-summary"></div>
+      </div>
+      <button type="submit" class="btn no-print" style="width:100%; background:black; color:white; margin-bottom:1rem;">Send Order via WhatsApp</button>
+      <button type="button" id="print-order" class="btn no-print" style="width:100%;">Print Order Receipt</button>
+    </form>
+  </section>
+
   <main data-barba="container" data-barba-namespace="privacy">
     <header class="container" style="padding-top: 150px; text-align: center; max-width: 800px;">
       <h1>Privacy Policy</h1>
@@ -55,8 +77,27 @@
       <div class="container">
         <div class="footer-top">
           <div class="footer-col">
-            <span style="font-family:'Italiana'; font-size:1.2rem; font-weight:bold;">VITO GINGLIES</span>
+            <img src="https://via.placeholder.com/150x40/fafafa/000000?text=VITO+GINGLIES" alt="Vito Ginglies" style="margin-bottom: 1rem;">
+            <p class="footer-desc">
+              Designing dreams with functional spaces that reflect personality and lifestyle. Premium men's jackets tailored for the bold.
+            </p>
+            <div class="social-links">
+              <a href="#">IG</a>
+              <a href="#">FB</a>
+              <a href="#">WA</a>
+            </div>
           </div>
+
+          <div class="footer-col">
+            <h4>Collections</h4>
+            <ul>
+              <li><a href="shop.html">Formal Jackets</a></li>
+              <li><a href="shop.html">Bomber Jackets</a></li>
+              <li><a href="shop.html">Sporty Editions</a></li>
+              <li><a href="shop.html">Casual Wear</a></li>
+            </ul>
+          </div>
+
           <div class="footer-col">
             <h4>Company</h4>
             <ul>
@@ -66,9 +107,24 @@
               <li><a href="privacy.html">Privacy Policy</a></li>
             </ul>
           </div>
+
+          <div class="footer-col">
+            <h4>Contact Info</h4>
+            <div class="footer-contact-item">
+              <span>📞</span> <span>+91 94929 06981</span>
+            </div>
+            <div class="footer-contact-item">
+              <span>✉️</span> <span>info@vitoginglies.com</span>
+            </div>
+            <div class="footer-contact-item">
+              <span>📍</span> <span>KMK Elite Durga Nagar,<br>Hyderabad, Telangana</span>
+            </div>
+          </div>
         </div>
+
         <div class="footer-bottom">
           <p>&copy; 2024 Vito Ginglies. All Rights Reserved.</p>
+          <p>Designed for Excellence.</p>
         </div>
       </div>
     </footer>

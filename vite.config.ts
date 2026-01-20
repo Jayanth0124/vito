@@ -10,6 +10,8 @@ export default defineConfig({
         shop: resolve(__dirname, 'shop.html'),
         about: resolve(__dirname, 'about.html'),
         contact: resolve(__dirname, 'contact.html'),
+        terms: resolve(__dirname, 'terms.html'),      // Added
+        privacy: resolve(__dirname, 'privacy.html'),  // Added
       },
     },
   },
