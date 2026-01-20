@@ -7,7 +7,7 @@
   --border: #e5e5e5;
   --font-display: 'Italiana', serif;
   --font-body: 'Manrope', sans-serif;
-  --gold: #D4AF37; /* Premium Gold for stars */
+  --gold: #D4AF37;
 }
 
 * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -173,24 +173,33 @@ nav {
 /* ============================
    TESTIMONIALS (REDESIGNED)
    ============================ */
+/* NEW DIVIDER STYLE */
+.section-divider {
+  width: 50px; 
+  height: 1px; 
+  background-color: var(--text); 
+  margin: 3rem auto; /* Spacing above/below the line */
+  opacity: 0.3;
+}
+
 .testimonials-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
   gap: 2rem;
-  margin-top: 4rem;
+  margin-top: 2rem; /* Adjusted since we have a divider now */
 }
 
 .testimonial-card {
   background: #ffffff;
   border: 1px solid var(--border);
   padding: 2.5rem;
-  border-radius: 4px; /* Slight radius */
+  border-radius: 4px;
   display: flex;
   flex-direction: column;
-  justify-content: space-between; /* Pushes profile to bottom */
+  justify-content: space-between;
   gap: 1.5rem;
   transition: box-shadow 0.3s ease, transform 0.3s ease;
-  text-align: left; /* Left align like reference */
+  text-align: left;
 }
 
 .testimonial-card:hover {
@@ -236,24 +245,9 @@ nav {
   color: var(--text);
 }
 
-.profile-info {
-  display: flex;
-  flex-direction: column;
-}
-
-.profile-name {
-  font-family: var(--font-display);
-  font-size: 1rem;
-  color: var(--text);
-  font-weight: 600;
-}
-
-.profile-status {
-  font-size: 0.75rem;
-  color: #888;
-  text-transform: uppercase;
-  letter-spacing: 1px;
-}
+.profile-info { display: flex; flex-direction: column; }
+.profile-name { font-family: var(--font-display); font-size: 1rem; color: var(--text); font-weight: 600; }
+.profile-status { font-size: 0.75rem; color: #888; text-transform: uppercase; letter-spacing: 1px; }
 
 /* ============================
    UI ELEMENTS
