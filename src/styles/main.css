@@ -258,6 +258,14 @@ footer {
   border-bottom: 1px solid var(--border); 
 }
 
+/* FIX: Restrict the logo image size in the footer */
+.footer-col img {
+  max-width: 180px; 
+  height: auto; 
+  display: block; 
+  margin-bottom: 1.5rem;
+}
+
 .footer-col h4 { 
   font-size: 0.9rem; 
   margin-bottom: 1.5rem; 
