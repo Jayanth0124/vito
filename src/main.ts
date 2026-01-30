@@ -24,7 +24,7 @@ const flyToCart = (startEl: HTMLElement, targetSelector: string, onComplete: () 
     return;
   }
 
-  // 1. Create Clone for animation
+  // 1. Create Clone
   const rectStart = startEl.getBoundingClientRect();
   const rectTarget = targetEl.getBoundingClientRect();
   
@@ -62,7 +62,7 @@ const flyToCart = (startEl: HTMLElement, targetSelector: string, onComplete: () 
     height: 20,
     opacity: 0,
     duration: 0.8,
-    ease: "power3.inOut"
+    ease: "power3.inOut" // Smooth acceleration/deceleration
   });
 };
 
@@ -70,19 +70,18 @@ const flyToCart = (startEl: HTMLElement, targetSelector: string, onComplete: () 
 // PDP Logic (Product Detail Page)
 // =========================================
 const showProductDetails = (product: Product) => {
-  // 1. Check if already open to prevent duplicates
-  if (document.getElementById('pdp-view')) return;
+  let pdp = document.getElementById('pdp-view');
+  if (!pdp) {
+    pdp = document.createElement('div');
+    pdp.id = 'pdp-view';
+    pdp.className = 'pdp-container';
+    // CRITICAL: Allows scrolling inside PDP without body scroll interference
+    pdp.setAttribute('data-lenis-prevent', 'true');
+    document.body.appendChild(pdp);
+  }
 
-  // 2. Push History State (Fixes Back Button Issue)
-  // We create a fake URL hash so the browser acknowledges the navigation change
+  // ADDED: Fix Back Button Logic (Browser History)
   history.pushState({ pdpOpen: true, productId: product.id }, '', `#product/${product.id}`);
-
-  let pdp = document.createElement('div');
-  pdp.id = 'pdp-view';
-  pdp.className = 'pdp-container';
-  // CRITICAL: Allows scrolling inside PDP without body scroll interference
-  pdp.setAttribute('data-lenis-prevent', 'true');
-  document.body.appendChild(pdp);
 
   // Initial State
   let selectedSize = product.sizes ? product.sizes[0] : 'M';
@@ -103,7 +102,7 @@ const showProductDetails = (product: Product) => {
         </div>
 
         <div class="pdp-details-col">
-           <div class="pdp-breadcrumb">← Back to Shop</div>
+           <div class="pdp-breadcrumb" onclick="history.back()">← Back to Shop</div>
            <h1 class="pdp-title intro-anim">${product.name}</h1>
            <div class="pdp-price intro-anim">$${product.price}</div>
            <p class="pdp-desc intro-anim">${product.description || 'Premium quality.'}</p>
@@ -119,7 +118,7 @@ const showProductDetails = (product: Product) => {
            </div>
 
            <div class="pdp-actions intro-anim">
-              <div class="qty-selector">
+              <div class="qty-selector" style="height: 55px; border: 1px solid #000;">
                   <button class="qty-btn" id="pdp-dec">-</button>
                   <input class="qty-input" id="pdp-qty" value="1" readonly>
                   <button class="qty-btn" id="pdp-inc">+</button>
@@ -227,22 +226,16 @@ const showProductDetails = (product: Product) => {
   document.getElementById('pdp-inc')?.addEventListener('click', () => { qty++; qtyInput.value = qty.toString(); });
   document.getElementById('pdp-dec')?.addEventListener('click', () => { if(qty>1) qty--; qtyInput.value = qty.toString(); });
 
-  // Add to Cart with Fly Animation
+  // Add to Cart with Animation
   document.getElementById('pdp-add')?.addEventListener('click', () => {
     const mainImg = document.getElementById('pdp-main-img') as HTMLElement;
     
     // Fly animation to cart trigger
     flyToCart(mainImg, '#cart-trigger', () => {
       cart.add(product, qty, selectedSize, selectedColor);
-      
-      // Use history back to close so state is kept clean
-      history.back(); 
+      // ADDED: Close using history to keep state clean
+      history.back();
     });
-  });
-
-  // UI Back Button Click -> Triggers Browser Back
-  pdp.querySelector('.pdp-breadcrumb')?.addEventListener('click', () => {
-    history.back();
   });
 
   // --- ENTRANCE ANIMATION ---
@@ -255,7 +248,6 @@ const showProductDetails = (product: Product) => {
   );
 };
 
-// Modified to be called by the PopState event
 const closeProductDetails = () => {
   const pdp = document.getElementById('pdp-view');
   if (pdp) {
@@ -267,7 +259,7 @@ const closeProductDetails = () => {
   }
 };
 
-// 3. Global Listener for Browser Back Button
+// ADDED: Global Listener for Browser Back Button
 window.addEventListener('popstate', (event) => {
   // If we are going back to a state without 'pdpOpen', we close the modal
   if (!event.state || !event.state.pdpOpen) {
@@ -285,7 +277,7 @@ const initPage = (container: Document | HTMLElement = document) => {
   const shopContainer = container.querySelector('#shop-container');
   if (shopContainer) {
     // ------------------------------------------
-    // RENDER GRID with SKELETON & OFFLINE LOGIC
+    // UPDATED: Render Grid with Wireframe/Skeleton
     // ------------------------------------------
     shopContainer.innerHTML = products.map(p => `
       <div class="product-card" data-id="${p.id}" style="cursor: pointer;">
@@ -328,6 +320,9 @@ const initPage = (container: Document | HTMLElement = document) => {
         img.parentElement?.classList.remove('skeleton');
       }
     });
+    // ------------------------------------------
+    // END UPDATED RENDER
+    // ------------------------------------------
     
     // Grid Click Event -> Open PDP
     shopContainer.addEventListener('click', (e: Event) => {
