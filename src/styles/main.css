@@ -693,3 +693,103 @@ footer {
 }
 
 /* ... [Rest of your CSS] ... */
+
+/* =========================================
+   CONTACT PAGE STYLING
+   ========================================= */
+
+/* 1. Layout: split into 2 columns on desktop, 1 on mobile */
+.contact-wrapper, 
+.contact-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 5rem;
+  margin-top: 3rem;
+  margin-bottom: 5rem;
+}
+
+/* 2. Premium Form Inputs */
+/* Targets all text inputs to ensure consistent look */
+input[type="text"],
+input[type="email"],
+input[type="tel"],
+textarea {
+  width: 100%;
+  padding: 1.2rem;
+  border: 1px solid #e5e5e5;
+  background-color: #fff;
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  color: #000;
+  margin-bottom: 1.5rem;
+  transition: all 0.3s ease;
+  border-radius: 0; /* Sharp edges */
+  appearance: none; /* Removes default browser styling */
+}
+
+input:focus, 
+textarea:focus {
+  outline: none;
+  border-color: #000;
+  background-color: #fafafa;
+}
+
+/* 3. Labels styling */
+label {
+  display: block;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: #666;
+  margin-bottom: 0.8rem;
+  font-weight: 600;
+}
+
+/* 4. Submit Button Styling */
+button[type="submit"],
+.contact-btn {
+  width: 100%;
+  background-color: #000;
+  color: #fff;
+  padding: 1.2rem;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  font-size: 0.85rem;
+  border: 1px solid #000;
+  cursor: pointer;
+  transition: all 0.4s ease;
+}
+
+button[type="submit"]:hover,
+.contact-btn:hover {
+  background-color: #fff;
+  color: #000;
+}
+
+/* 5. Typography Fixes for Contact Info */
+.contact-info h3, 
+.atelier-info h3 {
+  font-size: 1.5rem;
+  margin-bottom: 1.5rem;
+  font-family: var(--font-display);
+}
+
+.contact-info p,
+.atelier-info p {
+  line-height: 1.8;
+  color: #555;
+  margin-bottom: 1rem;
+}
+
+/* 6. Mobile Responsiveness */
+@media (max-width: 900px) {
+  .contact-wrapper, 
+  .contact-grid {
+    grid-template-columns: 1fr; /* Stack vertically */
+    gap: 3rem;
+  }
+  
+  /* Order: Form first, Info second (optional, or keep default) */
+  .contact-form { order: 1; }
+  .contact-info { order: 2; text-align: center; }
+}
