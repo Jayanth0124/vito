@@ -7,7 +7,7 @@ export const initFooter = () => {
       <div class="container">
         <div class="footer-top">
           <div class="footer-col">
-            <img src="footer.png" alt="Vito Ginglies" class="footer-logo" style="max-width: 150px; margin-bottom: 1.5rem;">
+            <img src="/footer.png" alt="Vito Ginglies" class="footer-logo" style="max-width: 150px; margin-bottom: 1.5rem;">
             <p class="footer-desc">
               Designing dreams with functional spaces that reflect personality and lifestyle. Premium men's jackets tailored for the bold.
             </p>
