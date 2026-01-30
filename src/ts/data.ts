@@ -2,12 +2,12 @@ export interface Product {
   id: string;
   name: string;
   type: 'Formal' | 'Bomber' | 'Sporty' | 'Casual';
-  price: number;
+  price: number;         // Discounted Price (e.g., 499)
+  originalPrice: number; // Strikethrough Price (e.g., 999)
   image: string; 
   description?: string;
   sizes?: string[];
   colors?: string[];
-  // New: Map colors to specific image arrays
   colorImages?: { [key: string]: string[] };
 }
 
@@ -16,7 +16,8 @@ export const products: Product[] = [
     id: '1', 
     name: 'Milanese Drape', 
     type: 'Formal', 
-    price: 500, 
+    price: 4999, 
+    originalPrice: 9999,
     image: 'https://placehold.co/400x600/111/fff?text=Milanese+Black',
     description: 'Crafted from premium Italian wool, this drape offers a sophisticated silhouette for the modern gentleman.',
     sizes: ['S', 'M', 'L', 'XL'],
@@ -38,7 +39,8 @@ export const products: Product[] = [
     id: '2', 
     name: 'Aviator Alpha', 
     type: 'Bomber', 
-    price: 350, 
+    price: 2499, 
+    originalPrice: 4999,
     image: 'https://placehold.co/400x600/222/fff?text=Aviator+Dark',
     description: 'A classic aviator cut reimagined with technical fabrics. Water-resistant, wind-proof, and effortlessly cool.',
     sizes: ['M', 'L', 'XL'],
@@ -60,7 +62,8 @@ export const products: Product[] = [
     id: '3', 
     name: 'Kinetic Shell', 
     type: 'Sporty', 
-    price: 290, 
+    price: 1999, 
+    originalPrice: 3999,
     image: 'https://placehold.co/400x600/333/fff?text=Kinetic+Tech',
     description: 'Engineered for movement. This piece utilizes 4-way stretch material to keep you comfortable.',
     sizes: ['S', 'M', 'L'],
@@ -77,7 +80,8 @@ export const products: Product[] = [
     id: '4', 
     name: 'Urban Tweed', 
     type: 'Casual', 
-    price: 420, 
+    price: 2999, 
+    originalPrice: 5999,
     image: 'https://placehold.co/400x600/444/fff?text=Casual+Fit',
     description: 'The perfect blend of heritage and street style. Rough-hewn tweed texture meets a contemporary cut.',
     sizes: ['M', 'L', 'XL', 'XXL'],

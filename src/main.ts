@@ -15,22 +15,24 @@ window.cart = cart;
 new CheckoutManager(cart);
 
 // =========================================
-// Animation Logic: Fly To Cart
+// Animation Logic: Fly To Cart (Smart Detection)
 // =========================================
 const flyToCart = (startEl: HTMLElement, targetSelector: string, onComplete: () => void) => {
-  // 1. Try finding mobile cart trigger first if visible
+  // 1. Smart Detection: Check if we are on mobile and the mobile cart icon is visible
   let targetEl = document.querySelector('#mobile-cart-trigger') as HTMLElement;
   
-  // 2. If mobile trigger isn't there or hidden, use desktop
+  // 2. If mobile icon is hidden (desktop mode) or doesn't exist, use the provided selector (desktop icon)
   if (!targetEl || getComputedStyle(targetEl).display === 'none') {
      targetEl = document.querySelector(targetSelector) as HTMLElement;
   }
 
+  // Safety check
   if (!startEl || !targetEl) {
     onComplete();
     return;
   }
 
+  // 3. Create Floating Clone
   const rectStart = startEl.getBoundingClientRect();
   const rectTarget = targetEl.getBoundingClientRect();
   
@@ -47,9 +49,11 @@ const flyToCart = (startEl: HTMLElement, targetSelector: string, onComplete: () 
   clone.style.transition = 'none'; 
   document.body.appendChild(clone);
 
+  // 4. Animate with GSAP
   const tl = gsap.timeline({
     onComplete: () => {
       clone.remove();
+      // Bumpy effect on the target icon
       gsap.fromTo(targetEl, { scale: 1 }, { scale: 1.2, duration: 0.1, yoyo: true, repeat: 1 });
       onComplete();
     }
@@ -61,7 +65,7 @@ const flyToCart = (startEl: HTMLElement, targetSelector: string, onComplete: () 
   tl.to(clone, {
     x: xDist,
     y: yDist,
-    width: 20,
+    width: 20, // Shrink to dot size
     height: 20,
     opacity: 0,
     duration: 0.8,
@@ -75,13 +79,13 @@ const flyToCart = (startEl: HTMLElement, targetSelector: string, onComplete: () 
 const showProductDetails = (product: Product) => {
   if (document.getElementById('pdp-view')) return;
   
-  // Fix Back Button: Push state so browser back button closes PDP
+  // Push state for Back Button support
   history.pushState({ pdpOpen: true, productId: product.id }, '', `#product/${product.id}`);
 
   let pdp = document.createElement('div');
   pdp.id = 'pdp-view';
   pdp.className = 'pdp-container';
-  // CRITICAL: Allows scrolling inside PDP without body scroll interference
+  // Allow scrolling inside PDP on mobile
   pdp.setAttribute('data-lenis-prevent', 'true');
   document.body.appendChild(pdp);
 
@@ -103,7 +107,12 @@ const showProductDetails = (product: Product) => {
         <div class="pdp-details-col">
            <div class="pdp-breadcrumb" onclick="history.back()">← Back to Shop</div>
            <h1 class="pdp-title intro-anim">${product.name}</h1>
-           <div class="pdp-price intro-anim">$${product.price}</div>
+           
+           <div class="pdp-price intro-anim">
+             <span class="price-original">₹${product.originalPrice}</span>
+             <span class="price-discount">₹${product.price}</span>
+           </div>
+           
            <p class="pdp-desc intro-anim">${product.description || 'Premium quality.'}</p>
            
            <div class="option-group intro-anim">
@@ -117,7 +126,7 @@ const showProductDetails = (product: Product) => {
            </div>
 
            <div class="pdp-actions intro-anim">
-              <div class="qty-selector" style="height: 55px; border: 1px solid #000;">
+              <div class="qty-selector">
                   <button class="qty-btn" id="pdp-dec">-</button>
                   <input class="qty-input" id="pdp-qty" value="1" readonly>
                   <button class="qty-btn" id="pdp-inc">+</button>
@@ -129,6 +138,7 @@ const showProductDetails = (product: Product) => {
     </div>
   `;
 
+  // --- Helpers ---
   function getImagesForColor(p: Product, color: string): string[] {
     if (p.colorImages && p.colorImages[color]) return p.colorImages[color];
     return [p.image];
@@ -153,6 +163,7 @@ const showProductDetails = (product: Product) => {
   renderThumbs(currentImages);
   renderOptions();
 
+  // Global helper for inline onclicks
   (window as any).swapMainImage = (src: string, el: HTMLElement) => {
     const main = document.getElementById('pdp-main-img') as HTMLImageElement;
     gsap.to(main, { opacity: 0.5, duration: 0.2, onComplete: () => {
@@ -163,6 +174,7 @@ const showProductDetails = (product: Product) => {
     el.parentElement?.classList.add('active');
   };
 
+  // Event Listeners
   document.getElementById('pdp-color-opts')?.addEventListener('click', (e) => {
     const target = e.target as HTMLElement;
     if (target.classList.contains('color-btn')) {
@@ -194,21 +206,22 @@ const showProductDetails = (product: Product) => {
   document.getElementById('pdp-inc')?.addEventListener('click', () => { qty++; qtyInput.value = qty.toString(); });
   document.getElementById('pdp-dec')?.addEventListener('click', () => { if(qty>1) qty--; qtyInput.value = qty.toString(); });
 
+  // Add to Cart Logic
   document.getElementById('pdp-add')?.addEventListener('click', () => {
     const mainImg = document.getElementById('pdp-main-img') as HTMLElement;
+    // Pass the standard desktop ID, the function will handle mobile override
     flyToCart(mainImg, '#cart-trigger', () => {
       cart.add(product, qty, selectedSize, selectedColor);
-      history.back(); // Go back to shop after adding
+      history.back(); // Return to shop after adding
     });
   });
 
+  // Entrance Animation
   gsap.to(pdp, { autoAlpha: 1, duration: 0.4 });
-  gsap.fromTo('.intro-anim', 
-    { y: 30, opacity: 0 },
-    { y: 0, opacity: 1, duration: 0.8, stagger: 0.1, ease: 'power3.out', delay: 0.2 }
-  );
+  gsap.fromTo('.intro-anim', { y: 30, opacity: 0 }, { y: 0, opacity: 1, duration: 0.8, stagger: 0.1, ease: 'power3.out', delay: 0.2 });
 };
 
+// Close PDP logic
 const closeProductDetails = () => {
   const pdp = document.getElementById('pdp-view');
   if (pdp) {
@@ -220,6 +233,7 @@ const closeProductDetails = () => {
   }
 };
 
+// Handle Browser Back Button
 window.addEventListener('popstate', (event) => {
   if (!event.state || !event.state.pdpOpen) {
     closeProductDetails();
@@ -233,7 +247,6 @@ const injectMobileCartIcon = () => {
   const nav = document.querySelector('nav');
   if (!nav) return;
   
-  // Only inject if it doesn't exist
   if (!document.getElementById('mobile-cart-trigger')) {
     const div = document.createElement('div');
     div.id = 'mobile-cart-trigger';
@@ -254,7 +267,7 @@ const injectMobileCartIcon = () => {
       nav.appendChild(div);
     }
 
-    // FIX: Toggle Logic for Mobile Cart Icon
+    // Mobile Toggle Event
     div.addEventListener('click', (e) => {
       e.preventDefault();
       const sidebar = document.getElementById('cart-sidebar');
@@ -272,15 +285,29 @@ const injectMobileCartIcon = () => {
 };
 
 // =========================================
-// Main Init
+// Main Init Logic
 // =========================================
 const initPage = (container: Document | HTMLElement = document) => {
   initScroll();
   initFooter(); 
-  injectMobileCartIcon(); // Inject Icon
+  injectMobileCartIcon(); 
   
   const shopContainer = container.querySelector('#shop-container');
   if (shopContainer) {
+    // 1. Inject Scrolling Banner
+    const bannerHTML = `
+      <div class="scrolling-banner-container">
+        <div class="scrolling-text">
+          ONE YEAR ANNIVERSARY SALE • FLAT 50% OFF • LIMITED TIME OFFER • PREMIUM CRAFTSMANSHIP • 
+          ONE YEAR ANNIVERSARY SALE • FLAT 50% OFF • LIMITED TIME OFFER • PREMIUM CRAFTSMANSHIP • 
+        </div>
+      </div>
+    `;
+    if (!document.querySelector('.scrolling-banner-container')) {
+      shopContainer.insertAdjacentHTML('beforebegin', bannerHTML);
+    }
+
+    // 2. Render Product Grid with Skeletons
     shopContainer.innerHTML = products.map(p => `
       <div class="product-card" data-id="${p.id}" style="cursor: pointer;">
         <div class="img-wrapper skeleton" style="overflow:hidden; height: 450px; background-color: #f4f4f4; position: relative;">
@@ -288,18 +315,35 @@ const initPage = (container: Document | HTMLElement = document) => {
         </div>
         <div style="padding-top:1rem;">
           <h3 style="font-size: 1.1rem;">${p.name}</h3>
-          <p style="color: #666; font-size: 0.85rem;">${p.type}</p>
+          
+          <div style="margin-top: 5px;">
+             <span class="price-original">₹${p.originalPrice}</span>
+             <span class="price-discount">₹${p.price}</span>
+          </div>
+          
+          <p style="color: #666; font-size: 0.85rem; margin-top: 5px;">${p.type}</p>
         </div>
       </div>
     `).join('');
     
+    // 3. Handle Image Loading (Skeleton Removal)
     const images = shopContainer.querySelectorAll('.product-img-load');
     images.forEach((img: any) => {
       img.onload = () => { img.classList.add('img-loaded'); img.parentElement?.classList.remove('skeleton'); };
-      img.onerror = () => { const p = img.parentElement; if(p) { p.classList.remove('skeleton'); p.innerHTML = '<div class="offline-placeholder"><span>⚠️ Image N/A</span></div>'; } };
-      if (img.complete && img.naturalHeight !== 0) { img.classList.add('img-loaded'); img.parentElement?.classList.remove('skeleton'); }
+      img.onerror = () => { 
+        const p = img.parentElement; 
+        if(p) { 
+          p.classList.remove('skeleton'); 
+          p.innerHTML = '<div class="offline-placeholder"><span>⚠️ Image N/A</span></div>'; 
+        } 
+      };
+      if (img.complete && img.naturalHeight !== 0) { 
+        img.classList.add('img-loaded'); 
+        img.parentElement?.classList.remove('skeleton'); 
+      }
     });
     
+    // 4. Click Event -> Open PDP
     shopContainer.addEventListener('click', (e: Event) => {
       const card = (e.target as HTMLElement).closest('.product-card') as HTMLElement;
       if (card) {
@@ -309,9 +353,9 @@ const initPage = (container: Document | HTMLElement = document) => {
     });
   }
 
+  // Mobile Menu Logic
   const mobileToggle = document.querySelector('.mobile-toggle');
   const navLinks = document.querySelector('.nav-links');
-  
   if (mobileToggle && navLinks) {
     const newToggle = mobileToggle.cloneNode(true) as HTMLElement;
     mobileToggle.parentNode?.replaceChild(newToggle, mobileToggle);
@@ -321,7 +365,7 @@ const initPage = (container: Document | HTMLElement = document) => {
       navLinks.classList.toggle('active');
     });
 
-    // FIX: Close hamburger menu when a link is clicked
+    // Auto-close menu when link clicked
     navLinks.querySelectorAll('a').forEach(link => {
       link.addEventListener('click', () => {
         newToggle.classList.remove('active');
@@ -330,7 +374,7 @@ const initPage = (container: Document | HTMLElement = document) => {
     });
   }
 
-  // FIX: Desktop Cart Toggle Logic
+  // Desktop Cart Trigger Logic (Toggle)
   const cartTrigger = document.getElementById('cart-trigger');
   if (cartTrigger) {
     cartTrigger.onclick = (e) => {
@@ -348,6 +392,7 @@ const initPage = (container: Document | HTMLElement = document) => {
     };
   }
 
+  // Close Logic (Overlay, Close Buttons)
   const closeElements = document.querySelectorAll('.btn-close-cart, .overlay, #close-checkout');
   closeElements.forEach(el => {
     el.addEventListener('click', () => {
@@ -357,6 +402,7 @@ const initPage = (container: Document | HTMLElement = document) => {
   });
 };
 
+// Barba Page Transitions
 barba.init({
   sync: true, 
   transitions: [{
@@ -366,6 +412,7 @@ barba.init({
   }]
 });
 
+// Initial Load
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', () => initPage(document));
 } else {

@@ -639,3 +639,57 @@ footer {
     padding-right: 1.5rem !important;
   }
 }
+
+/* ... [Previous CSS Content] ... */
+
+/* ============================
+   SCROLLING BANNER
+   ============================ */
+.scrolling-banner-container {
+  width: 100%;
+  background-color: #000;
+  color: #fff;
+  padding: 12px 0;
+  overflow: hidden;
+  position: relative;
+  white-space: nowrap;
+  margin-bottom: 3rem; /* Space before grid */
+}
+
+.scrolling-text {
+  display: inline-block;
+  font-family: var(--font-display);
+  font-size: 0.9rem;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  animation: scrollText 20s linear infinite;
+  padding-left: 100%; /* Start from right */
+}
+
+@keyframes scrollText {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-100%); }
+}
+
+/* ============================
+   PRICE STYLING
+   ============================ */
+.price-tag {
+  font-family: var(--font-body);
+  font-weight: 600;
+  color: #000;
+}
+
+.price-original {
+  text-decoration: line-through;
+  color: #888;
+  margin-right: 8px;
+  font-weight: 400;
+  font-size: 0.9em;
+}
+
+.price-discount {
+  color: #D4AF37; /* Gold accent for deal */
+}
+
+/* ... [Rest of your CSS] ... */
