@@ -66,6 +66,6 @@ export class CheckoutManager {
     msg += `\nRequesting confirmation for this order.`;
 
     const encoded = encodeURIComponent(msg);
-    window.open(`https://wa.me/6309113898?text=${encoded}`, '_blank');
+    window.open(`https://wa.me/+916309113898?text=${encoded}`, '_blank');
   }
 }
