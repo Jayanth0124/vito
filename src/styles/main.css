@@ -566,3 +566,76 @@ footer {
     padding-top: 90px !important; 
   }
 }
+
+/* =========================================
+   FIX: MODAL HEADER VISIBILITY & CHECKOUT STYLING
+   ========================================= */
+
+/* 1. Fix "Your Cart" hidden under header */
+/* We add padding-top equal to header height + extra space */
+.modal-panel, 
+#checkout-modal, 
+#cart-modal {
+  padding-top: 120px !important; 
+}
+
+/* 2. Fix Checkout Form Styling (Premium Look) */
+#checkout-form {
+  display: flex;
+  flex-direction: column;
+}
+
+#checkout-form label {
+  display: block;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 1.5px;
+  color: #888;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+}
+
+#checkout-form input,
+#checkout-form textarea {
+  width: 100%;
+  padding: 1rem;
+  border: 1px solid #e5e5e5;
+  background-color: #fff;
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  margin-bottom: 1.5rem;
+  transition: border-color 0.3s ease;
+  border-radius: 0; /* Sharp edges for premium feel */
+}
+
+#checkout-form input:focus,
+#checkout-form textarea:focus {
+  outline: none;
+  border-color: #000;
+}
+
+/* Order Summary Box in Checkout */
+#checkout-summary {
+  background: #f9f9f9;
+  padding: 1.5rem;
+  margin-bottom: 2rem;
+  border: 1px solid #eee;
+}
+
+/* Fix Modal Title Spacing */
+.modal-panel h2,
+#checkout-modal h2 {
+  margin-bottom: 2rem;
+  font-size: 2rem;
+}
+
+/* Mobile specific adjustment to ensure full visibility */
+@media (max-width: 480px) {
+  .modal-panel, 
+  #checkout-modal,
+  #cart-modal {
+    padding-top: 100px !important;
+    padding-left: 1.5rem !important;
+    padding-right: 1.5rem !important;
+  }
+}
