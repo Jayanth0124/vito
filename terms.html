@@ -1,138 +1,181 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Terms & Conditions | Vito Ginglies</title>
-  <link rel="stylesheet" href="./src/styles/main.css" />
-  <link rel="stylesheet" href="./src/styles/print.css" />
-</head>
-<body data-barba="wrapper">
-
-  <nav>
-    <a href="index.html" class="nav-brand">
-      <img src="logo.png" alt="VG">
-      <span>VITO GINGLIES</span>
-    </a>
-    <div class="mobile-toggle"><div class="bar"></div><div class="bar"></div><div class="bar"></div></div>
-    <div class="nav-links">
-      <a href="index.html">Home</a>
-      <a href="about.html">Our Story</a>
-      <a href="shop.html">Collection</a>
-      <a href="contact.html">Contact</a>
-      <a href="#" id="cart-trigger">CART (<span id="cart-count">0</span>)</a>
-    </div>
-  </nav>
-
-  <div class="overlay"></div>
-  <aside id="cart-sidebar" class="modal-panel">
-    <div style="display:flex; justify-content:space-between; align-items:center;">
-      <h2>Your Cart</h2>
-      <button class="btn-close-cart" style="background:none; border:none; cursor:pointer; font-size: 1.5rem;">&times;</button>
-    </div>
-    <div id="cart-list" style="flex:1; margin-top:2rem;"></div>
-    <button id="trigger-checkout" class="btn" style="width:100%; text-align:center; background: #000; color: #fff;">Checkout</button>
-  </aside>
-
-  <section id="checkout-modal" class="modal-panel" style="width: 600px; z-index: 300;">
-    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:2rem;">
-      <h2>Finalize Order</h2>
-      <button id="close-checkout" class="no-print" style="border:none; background:none; cursor:pointer;">CLOSE</button>
-    </div>
-    <div style="margin-bottom: 2rem; border-bottom: 1px solid #eee; padding-bottom: 1rem;">
-      <strong>Order #: <span id="order-id-display"></span></strong>
-    </div>
-    <form id="checkout-form">
-      <div class="form-group"><label>Full Name</label><input type="text" id="c-name" required placeholder="John Doe"></div>
-      <div class="form-group"><label>Phone Number</label><input type="tel" id="c-phone" required placeholder="+1 234..."></div>
-      <div class="form-group"><label>Alternative Phone (Optional)</label><input type="tel" id="c-alt-phone"></div>
-      <div class="form-group"><label>Shipping Address</label><textarea id="c-address" rows="3" required></textarea></div>
-      <div style="background:#f9f9f9; padding:1rem; margin-bottom:2rem;">
-        <h4>Order Summary</h4>
-        <div id="checkout-summary"></div>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Terms & Conditions | Vito Ginglies</title>
+    <link rel="stylesheet" href="./src/styles/main.css" />
+    <link rel="stylesheet" href="./src/styles/print.css" />
+  </head>
+  <body data-barba="wrapper">
+    <nav>
+      <a href="index.html" class="nav-brand">
+        <img src="logo.png" alt="VG" />
+        <span>VITO GINGLIES</span>
+      </a>
+      <div class="mobile-toggle">
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
       </div>
-      <button type="submit" class="btn no-print" style="width:100%; background:black; color:white; margin-bottom:1rem;">Send Order via WhatsApp</button>
-      <button type="button" id="print-order" class="btn no-print" style="width:100%;">Print Order Receipt</button>
-    </form>
-  </section>
+      <div class="nav-links">
+        <a href="index.html">Home</a>
+        <a href="about.html">Our Story</a>
+        <a href="shop.html">Collection</a>
+        <a href="contact.html">Contact</a>
+        <a href="#" id="cart-trigger">CART (<span id="cart-count">0</span>)</a>
+      </div>
+    </nav>
 
-  <main data-barba="container" data-barba-namespace="terms">
-    <header class="container" style="padding-top: 150px; text-align: center; max-width: 800px;">
-      <h1>Terms & Conditions</h1>
-      <p style="margin-top: 1.5rem; color: #666;">Last updated: January 2024</p>
-    </header>
+    <div class="overlay"></div>
+    <aside id="cart-sidebar" class="modal-panel">
+      <div
+        style="
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        "
+      >
+        <h2>Your Cart</h2>
+        <button
+          class="btn-close-cart"
+          style="
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1.5rem;
+          "
+        >
+          &times;
+        </button>
+      </div>
+      <div id="cart-list" style="flex: 1; margin-top: 2rem"></div>
+      <button
+        id="trigger-checkout"
+        class="btn"
+        style="width: 100%; text-align: center; background: #000; color: #fff"
+      >
+        Checkout
+      </button>
+    </aside>
 
-    <section class="container" style="max-width: 800px; margin-top: 4rem;">
-      <h3 style="margin-bottom: 1rem;">1. Introduction</h3>
-      <p style="margin-bottom: 2rem;">Welcome to Vito Ginglies. By accessing our website and placing an order, you agree to be bound by these terms and conditions.</p>
-
-      <h3 style="margin-bottom: 1rem;">2. Ordering Process</h3>
-      <p style="margin-bottom: 2rem;">All orders are processed via WhatsApp communication. The prices listed on the website are indicative. Final pricing and availability will be confirmed during the chat.</p>
-
-      <h3 style="margin-bottom: 1rem;">3. Returns & Refunds</h3>
-      <p style="margin-bottom: 2rem;">Due to the exclusive nature of our products, returns are only accepted in cases of manufacturing defects. Please inspect your items upon delivery.</p>
-
-      <h3 style="margin-bottom: 1rem;">4. Intellectual Property</h3>
-      <p style="margin-bottom: 2rem;">All content, designs, and imagery on this website are the property of Vito Ginglies and may not be used without permission.</p>
+    <section
+      id="checkout-modal"
+      class="modal-panel"
+      style="width: 600px; z-index: 300"
+    >
+      <div
+        style="
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: 2rem;
+        "
+      >
+        <h2>Finalize Order</h2>
+        <button
+          id="close-checkout"
+          class="no-print"
+          style="border: none; background: none; cursor: pointer"
+        >
+          CLOSE
+        </button>
+      </div>
+      <div
+        style="
+          margin-bottom: 2rem;
+          border-bottom: 1px solid #eee;
+          padding-bottom: 1rem;
+        "
+      >
+        <strong>Order #: <span id="order-id-display"></span></strong>
+      </div>
+      <form id="checkout-form">
+        <div class="form-group">
+          <label>Full Name</label
+          ><input type="text" id="c-name" required placeholder="John Doe" />
+        </div>
+        <div class="form-group">
+          <label>Phone Number</label
+          ><input type="tel" id="c-phone" required placeholder="+1 234..." />
+        </div>
+        <div class="form-group">
+          <label>Alternative Phone (Optional)</label
+          ><input type="tel" id="c-alt-phone" />
+        </div>
+        <div class="form-group">
+          <label>Shipping Address</label
+          ><textarea id="c-address" rows="3" required></textarea>
+        </div>
+        <div style="background: #f9f9f9; padding: 1rem; margin-bottom: 2rem">
+          <h4>Order Summary</h4>
+          <div id="checkout-summary"></div>
+        </div>
+        <button
+          type="submit"
+          class="btn no-print"
+          style="
+            width: 100%;
+            background: black;
+            color: white;
+            margin-bottom: 1rem;
+          "
+        >
+          Send Order via WhatsApp
+        </button>
+        <button
+          type="button"
+          id="print-order"
+          class="btn no-print"
+          style="width: 100%"
+        >
+          Print Order Receipt
+        </button>
+      </form>
     </section>
 
-    <footer>
-      <div class="container">
-        <div class="footer-top">
-          <div class="footer-col">
-            <img src="footer.png" alt="Vito Ginglies" class="footer-logo">
-            <p class="footer-desc">
-              Designing dreams with functional spaces that reflect personality and lifestyle. Premium men's jackets tailored for the bold.
-            </p>
-            <div class="social-links">
-              <a href="#">IG</a>
-              <a href="#">FB</a>
-              <a href="#">WA</a>
-            </div>
-          </div>
+    <main data-barba="container" data-barba-namespace="terms">
+      <header
+        class="container"
+        style="padding-top: 150px; text-align: center; max-width: 800px"
+      >
+        <h1>Terms & Conditions</h1>
+        <p style="margin-top: 1.5rem; color: #666">
+          Last updated: January 2024
+        </p>
+      </header>
 
-          <div class="footer-col">
-            <h4>Collections</h4>
-            <ul>
-              <li><a href="shop.html">Formal Jackets</a></li>
-              <li><a href="shop.html">Bomber Jackets</a></li>
-              <li><a href="shop.html">Sporty Editions</a></li>
-              <li><a href="shop.html">Casual Wear</a></li>
-            </ul>
-          </div>
+      <section class="container" style="max-width: 800px; margin-top: 4rem">
+        <h3 style="margin-bottom: 1rem">1. Introduction</h3>
+        <p style="margin-bottom: 2rem">
+          Welcome to Vito Ginglies. By accessing our website and placing an
+          order, you agree to be bound by these terms and conditions.
+        </p>
 
-          <div class="footer-col">
-            <h4>Company</h4>
-            <ul>
-              <li><a href="about.html">About Us</a></li>
-              <li><a href="contact.html">Contact</a></li>
-              <li><a href="terms.html">Terms & Conditions</a></li>
-              <li><a href="privacy.html">Privacy Policy</a></li>
-            </ul>
-          </div>
+        <h3 style="margin-bottom: 1rem">2. Ordering Process</h3>
+        <p style="margin-bottom: 2rem">
+          All orders are processed via WhatsApp communication. The prices listed
+          on the website are indicative. Final pricing and availability will be
+          confirmed during the chat.
+        </p>
 
-          <div class="footer-col">
-            <h4>Contact Info</h4>
-            <div class="footer-contact-item">
-              <span>📞</span> <span>+91 94929 06981</span>
-            </div>
-            <div class="footer-contact-item">
-              <span>✉️</span> <span>info@vitoginglies.com</span>
-            </div>
-            <div class="footer-contact-item">
-              <span>📍</span> <span>KMK Elite Durga Nagar,<br>Hyderabad, Telangana</span>
-            </div>
-          </div>
-        </div>
+        <h3 style="margin-bottom: 1rem">3. Returns & Refunds</h3>
+        <p style="margin-bottom: 2rem">
+          Due to the exclusive nature of our products, returns are only accepted
+          in cases of manufacturing defects. Please inspect your items upon
+          delivery.
+        </p>
 
-        <div class="footer-bottom">
-          <p>&copy; 2024 Vito Ginglies. All Rights Reserved.</p>
-          <p>Designed for Excellence.</p>
-        </div>
-      </div>
-    </footer>
-  </main>
+        <h3 style="margin-bottom: 1rem">4. Intellectual Property</h3>
+        <p style="margin-bottom: 2rem">
+          All content, designs, and imagery on this website are the property of
+          Vito Ginglies and may not be used without permission.
+        </p>
+      </section>
 
-  <script type="module" src="/src/main.ts"></script>
-</body>
+      <div id="global-footer"></div>
+    </main>
+
+    <script type="module" src="/src/main.ts"></script>
+  </body>
 </html>

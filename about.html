@@ -1,155 +1,192 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Our Story | Vito Ginglies</title>
-  <link rel="stylesheet" href="./src/styles/main.css" />
-  <link rel="stylesheet" href="./src/styles/print.css" />
-</head>
-<body data-barba="wrapper">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Our Story | Vito Ginglies</title>
+    <link rel="stylesheet" href="./src/styles/main.css" />
+    <link rel="stylesheet" href="./src/styles/print.css" />
+  </head>
+  <body data-barba="wrapper">
+    <nav>
+      <a href="index.html" class="nav-brand">
+        <img src="logo.png" alt="VG" />
+        <span>VITO GINGLIES</span>
+      </a>
 
-  <nav>
-    <a href="index.html" class="nav-brand">
-      <img src="logo.png" alt="VG">
-      <span>VITO GINGLIES</span>
-    </a>
-    
-    <div class="mobile-toggle">
-      <div class="bar"></div>
-      <div class="bar"></div>
-      <div class="bar"></div>
-    </div>
-
-    <div class="nav-links">
-      <a href="index.html">Home</a>
-      <a href="about.html" class="active-link" style="border-bottom: 1px solid black;">Our Story</a>
-      <a href="shop.html">Collection</a>
-      <a href="contact.html">Contact</a>
-      <a href="#" id="cart-trigger">CART (<span id="cart-count">0</span>)</a>
-    </div>
-  </nav>
-
-  <div id="toast">Item added to cart</div>
-
-  <div class="overlay"></div>
-  <aside id="cart-sidebar" class="modal-panel">
-    <div style="display:flex; justify-content:space-between; align-items:center;">
-      <h2>Your Cart</h2>
-      <button class="btn-close-cart" style="background:none; border:none; cursor:pointer; font-size: 1.5rem;">&times;</button>
-    </div>
-    <div id="cart-list" style="flex:1; margin-top:2rem;"></div>
-    <button id="trigger-checkout" class="btn" style="width:100%; text-align:center; background: #000; color: #fff;">Checkout</button>
-  </aside>
-
-  <section id="checkout-modal" class="modal-panel" style="width: 600px; z-index: 300;">
-    <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:2rem;">
-      <h2>Finalize Order</h2>
-      <button id="close-checkout" class="no-print" style="border:none; background:none; cursor:pointer;">CLOSE</button>
-    </div>
-    <div style="margin-bottom: 2rem; border-bottom: 1px solid #eee; padding-bottom: 1rem;">
-      <strong>Order #: <span id="order-id-display"></span></strong>
-    </div>
-    <form id="checkout-form">
-      <div class="form-group"><label>Full Name</label><input type="text" id="c-name" required placeholder="John Doe"></div>
-      <div class="form-group"><label>Phone Number</label><input type="tel" id="c-phone" required placeholder="+1 234..."></div>
-      <div class="form-group"><label>Alternative Phone (Optional)</label><input type="tel" id="c-alt-phone"></div>
-      <div class="form-group"><label>Shipping Address</label><textarea id="c-address" rows="3" required></textarea></div>
-      <div style="background:#f9f9f9; padding:1rem; margin-bottom:2rem;">
-        <h4>Order Summary</h4>
-        <div id="checkout-summary"></div>
+      <div class="mobile-toggle">
+        <div class="bar"></div>
+        <div class="bar"></div>
+        <div class="bar"></div>
       </div>
-      <button type="submit" class="btn no-print" style="width:100%; background:black; color:white; margin-bottom:1rem;">Send Order via WhatsApp</button>
-      <button type="button" id="print-order" class="btn no-print" style="width:100%;">Print Order Receipt</button>
-    </form>
-  </section>
 
-  <main data-barba="container" data-barba-namespace="about">
-    
-    <header class="container" style="padding-top: 150px; text-align: center; max-width: 800px;">
-      <h1>The Philosophy</h1>
-      <p style="margin-top: 2rem; font-size: 1.1rem; color: #555;">
-        Vito Ginglies was born from a desire to combine structural elegance with everyday utility. 
-        We believe that a jacket is not just clothing; it is the first layer of interaction with the world.
-      </p>
-    </header>
-
-    <section class="container" style="padding-top: 4rem;">
-      <div style="width: 100%; height: 500px; overflow: hidden; background: #eee;">
-        <img src="https://placehold.co/1200x600/eee/111?text=Atelier+View" style="width: 100%; height: 100%; object-fit: cover;" data-speed="0.2" alt="Atelier">
+      <div class="nav-links">
+        <a href="index.html">Home</a>
+        <a
+          href="about.html"
+          class="active-link"
+          style="border-bottom: 1px solid black"
+          >Our Story</a
+        >
+        <a href="shop.html">Collection</a>
+        <a href="contact.html">Contact</a>
+        <a href="#" id="cart-trigger">CART (<span id="cart-count">0</span>)</a>
       </div>
+    </nav>
+
+    <div id="toast">Item added to cart</div>
+
+    <div class="overlay"></div>
+    <aside id="cart-sidebar" class="modal-panel">
+      <div
+        style="
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+        "
+      >
+        <h2>Your Cart</h2>
+        <button
+          class="btn-close-cart"
+          style="
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 1.5rem;
+          "
+        >
+          &times;
+        </button>
+      </div>
+      <div id="cart-list" style="flex: 1; margin-top: 2rem"></div>
+      <button
+        id="trigger-checkout"
+        class="btn"
+        style="width: 100%; text-align: center; background: #000; color: #fff"
+      >
+        Checkout
+      </button>
+    </aside>
+
+    <section
+      id="checkout-modal"
+      class="modal-panel"
+      style="width: 600px; z-index: 300"
+    >
+      <div
+        style="
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-bottom: 2rem;
+        "
+      >
+        <h2>Finalize Order</h2>
+        <button
+          id="close-checkout"
+          class="no-print"
+          style="border: none; background: none; cursor: pointer"
+        >
+          CLOSE
+        </button>
+      </div>
+      <div
+        style="
+          margin-bottom: 2rem;
+          border-bottom: 1px solid #eee;
+          padding-bottom: 1rem;
+        "
+      >
+        <strong>Order #: <span id="order-id-display"></span></strong>
+      </div>
+      <form id="checkout-form">
+        <div class="form-group">
+          <label>Full Name</label
+          ><input type="text" id="c-name" required placeholder="John Doe" />
+        </div>
+        <div class="form-group">
+          <label>Phone Number</label
+          ><input type="tel" id="c-phone" required placeholder="+1 234..." />
+        </div>
+        <div class="form-group">
+          <label>Alternative Phone (Optional)</label
+          ><input type="tel" id="c-alt-phone" />
+        </div>
+        <div class="form-group">
+          <label>Shipping Address</label
+          ><textarea id="c-address" rows="3" required></textarea>
+        </div>
+        <div style="background: #f9f9f9; padding: 1rem; margin-bottom: 2rem">
+          <h4>Order Summary</h4>
+          <div id="checkout-summary"></div>
+        </div>
+        <button
+          type="submit"
+          class="btn no-print"
+          style="
+            width: 100%;
+            background: black;
+            color: white;
+            margin-bottom: 1rem;
+          "
+        >
+          Send Order via WhatsApp
+        </button>
+        <button
+          type="button"
+          id="print-order"
+          class="btn no-print"
+          style="width: 100%"
+        >
+          Print Order Receipt
+        </button>
+      </form>
     </section>
 
-    <section class="container" style="max-width: 800px;">
-      <h2 style="margin-bottom: 2rem;">Craftsmanship</h2>
-      <p style="margin-bottom: 1.5rem;">
-        Every piece is engineered using inertia-based fabrics that maintain their silhouette while allowing fluid movement. 
-        Sourced from the finest mills in Northern Italy, our textiles undergo rigorous testing for durability and comfort.
-      </p>
-      <p>
-        Our design process is subtractive. We remove the unnecessary until only the essential remains. 
-        The result is a collection of jackets that feel heavy in quality but weightless in wear.
-      </p>
-    </section>
+    <main data-barba="container" data-barba-namespace="about">
+      <header
+        class="container"
+        style="padding-top: 150px; text-align: center; max-width: 800px"
+      >
+        <h1>The Philosophy</h1>
+        <p style="margin-top: 2rem; font-size: 1.1rem; color: #555">
+          Vito Ginglies was born from a desire to combine structural elegance
+          with everyday utility. We believe that a jacket is not just clothing;
+          it is the first layer of interaction with the world.
+        </p>
+      </header>
 
-    <footer>
-      <div class="container">
-        <div class="footer-top">
-          <div class="footer-col">
-            <img src="footer.png" alt="Vito Ginglies" class="footer-logo">
-            <p class="footer-desc">
-              Designing dreams with functional spaces that reflect personality and lifestyle. Premium men's jackets tailored for the bold.
-            </p>
-            <div class="social-links">
-              <a href="#">IG</a>
-              <a href="#">FB</a>
-              <a href="#">WA</a>
-            </div>
-          </div>
-
-          <div class="footer-col">
-            <h4>Collections</h4>
-            <ul>
-              <li><a href="shop.html">Formal Jackets</a></li>
-              <li><a href="shop.html">Bomber Jackets</a></li>
-              <li><a href="shop.html">Sporty Editions</a></li>
-              <li><a href="shop.html">Casual Wear</a></li>
-            </ul>
-          </div>
-
-          <div class="footer-col">
-            <h4>Company</h4>
-            <ul>
-              <li><a href="about.html">About Us</a></li>
-              <li><a href="contact.html">Contact</a></li>
-              <li><a href="terms.html">Terms & Conditions</a></li>
-              <li><a href="privacy.html">Privacy Policy</a></li>
-            </ul>
-          </div>
-
-          <div class="footer-col">
-            <h4>Contact Info</h4>
-            <div class="footer-contact-item">
-              <span>📞</span> <span>+91 94929 06981</span>
-            </div>
-            <div class="footer-contact-item">
-              <span>✉️</span> <span>info@vitoginglies.com</span>
-            </div>
-            <div class="footer-contact-item">
-              <span>📍</span> <span>KMK Elite Durga Nagar,<br>Hyderabad, Telangana</span>
-            </div>
-          </div>
+      <section class="container" style="padding-top: 4rem">
+        <div
+          style="width: 100%; height: 500px; overflow: hidden; background: #eee"
+        >
+          <img
+            src="https://placehold.co/1200x600/eee/111?text=Atelier+View"
+            style="width: 100%; height: 100%; object-fit: cover"
+            data-speed="0.2"
+            alt="Atelier"
+          />
         </div>
+      </section>
 
-        <div class="footer-bottom">
-          <p>&copy; 2024 Vito Ginglies. All Rights Reserved.</p>
-          <p>Designed for Excellence.</p>
-        </div>
-      </div>
-    </footer>
+      <section class="container" style="max-width: 800px">
+        <h2 style="margin-bottom: 2rem">Craftsmanship</h2>
+        <p style="margin-bottom: 1.5rem">
+          Every piece is engineered using inertia-based fabrics that maintain
+          their silhouette while allowing fluid movement. Sourced from the
+          finest mills in Northern Italy, our textiles undergo rigorous testing
+          for durability and comfort.
+        </p>
+        <p>
+          Our design process is subtractive. We remove the unnecessary until
+          only the essential remains. The result is a collection of jackets that
+          feel heavy in quality but weightless in wear.
+        </p>
+      </section>
 
-  </main>
+      <div id="global-footer"></div>
+    </main>
 
-  <script type="module" src="/src/main.ts"></script>
-</body>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
 </html>
