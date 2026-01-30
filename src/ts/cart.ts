@@ -38,9 +38,9 @@ export class CartManager {
     this.render();
     this.showNotification(`Added ${qty} x ${product.name} (${size})`);
     
-    // Open cart automatically
-    document.getElementById('cart-sidebar')?.classList.add('active');
-    document.querySelector('.overlay')?.classList.add('active');
+    // DISABLE AUTO-OPEN (As requested)
+    // document.getElementById('cart-sidebar')?.classList.add('active');
+    // document.querySelector('.overlay')?.classList.add('active');
   }
 
   remove(variantId: string) {
@@ -83,9 +83,14 @@ export class CartManager {
 
   private render() {
     const countEl = document.getElementById('cart-count');
-    const listEl = document.getElementById('cart-list');
+    // Also update the mobile cart count if it exists
+    const mobileCountEl = document.getElementById('mobile-cart-count');
     
-    if (countEl) countEl.innerText = this.items.reduce((a,b) => a + b.quantity, 0).toString();
+    const totalQty = this.items.reduce((a,b) => a + b.quantity, 0).toString();
+    if (countEl) countEl.innerText = totalQty;
+    if (mobileCountEl) mobileCountEl.innerText = totalQty;
+    
+    const listEl = document.getElementById('cart-list');
     
     if (listEl) {
       if (this.items.length === 0) {

@@ -64,7 +64,9 @@ section { padding: 8vh 0; }
 nav {
   position: fixed; top: 0; width: 100%; height: 80px;
   padding: 0 2rem; display: flex; justify-content: space-between; align-items: center;
-  z-index: 100; background-color: var(--bg); border-bottom: 1px solid var(--border);
+  /* FIX: Z-Index 201 ensures header is visible ABOVE modals (200) */
+  z-index: 201; 
+  background-color: var(--bg); border-bottom: 1px solid var(--border);
 }
 
 .nav-brand {
@@ -88,12 +90,16 @@ nav {
 .mobile-toggle { display: none; cursor: pointer; z-index: 170; }
 .bar { width: 25px; height: 2px; background-color: var(--text); margin: 6px 0; transition: 0.4s; }
 
+/* Mobile Cart Trigger Styles */
+#mobile-cart-trigger { display: none; cursor: pointer; margin-right: 20px; }
+
 /* ============================
-   RESPONSIVE LOGIC (OLD)
+   RESPONSIVE LOGIC
    ============================ */
 @media (max-width: 900px) {
   nav { padding: 0 1.2rem; }
   .mobile-toggle { display: block; }
+  #mobile-cart-trigger { display: block; }
 
   .nav-links {
     position: fixed; top: 0; right: 0; height: 100vh; 
@@ -111,16 +117,34 @@ nav {
   .footer-top { grid-template-columns: 1fr !important; gap: 3rem; text-align: left; }
   .product-grid { grid-template-columns: 1fr !important; gap: 2.5rem; }
 
-  .about-grid { gap: 3rem !important; flex-direction: column-reverse; } 
-  .about-content { padding-right: 0 !important; text-align: center; }
-  .about-img-wrapper { height: 400px !important; width: 100%; }
+  /* UPDATED: About Section Mobile Fix */
+  .about-grid { 
+    gap: 3rem !important; 
+    flex-direction: column; /* Stack normally on mobile */
+  } 
+  .about-content { 
+    padding-right: 0 !important; 
+    text-align: center; 
+    padding: 0 1rem; /* Ensure text has padding */
+  }
+  .about-img-wrapper { 
+    height: 400px !important; 
+    width: 100% !important; 
+    min-width: 0 !important; /* Fix collapsed look on small screens */
+  }
 }
 
 @media (max-width: 480px) {
   .nav-brand span { font-size: 1rem; } 
   .hero h1 { font-size: 2.8rem; }
   .container { padding: 0 1.2rem; }
-  .modal-panel { width: 100% !important; max-width: 100%; }
+  
+  /* Fix Modal Sizing */
+  .modal-panel, #checkout-modal { 
+    width: 100% !important; 
+    padding: 1.5rem !important; 
+    padding-top: 90px !important; 
+  }
 }
 
 /* ============================
@@ -134,6 +158,7 @@ nav {
   text-align: center; 
   flex-direction: column; 
   padding-top: 80px;
+  background-color: #000; /* Fallback background */
   background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('https://images.pexels.com/photos/28758126/pexels-photo-28758126/free-photo-of-casual-portrait-of-two-stylish-men-in-jackets.jpeg?auto=compress&cs=tinysrgb&w=1260&h=750&dpr=2');
   background-size: cover;
   background-position: center;
@@ -149,7 +174,6 @@ nav {
 .hero .btn { border-color: #ffffff; color: #ffffff; }
 .hero .btn:hover { background: #ffffff; color: #000000; }
 
-/* UPDATED: Hide the Category Banners as requested */
 .category-banner-grid {
   display: none !important;
 }
@@ -239,13 +263,14 @@ nav {
 .overlay { position: fixed; top: 0; right: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.4); z-index: 150; opacity: 0; pointer-events: none; transition: 0.3s; }
 .overlay.active { opacity: 1; pointer-events: all; }
 
+/* FIX: Added touch-action and overflow scrolling for mobile */
 .modal-panel { 
   position: fixed; 
   top: 0; 
   right: 0; 
   width: 450px; 
   max-width: 100%; 
-  height: 100vh; 
+  height: 100dvh; 
   background: white; 
   transform: translateX(100%); 
   transition: transform 0.6s cubic-bezier(0.2, 1, 0.3, 1); 
@@ -256,15 +281,19 @@ nav {
   border-left: 1px solid var(--border); 
   overflow-y: auto; 
   overscroll-behavior: contain; 
+  touch-action: pan-y;
+  -webkit-overflow-scrolling: touch;
 }
 .modal-panel.active { transform: translateX(0); }
 
 #checkout-modal {
-  position: fixed; top: 0; right: 0; width: 450px; height: 100vh;
+  position: fixed; top: 0; right: 0; width: 450px; height: 100dvh;
   background: white; z-index: 200; transform: translateX(100%);
   transition: transform 0.6s cubic-bezier(0.2, 1, 0.3, 1);
   padding: 3rem; overflow-y: auto; overscroll-behavior: contain;
   border-left: 1px solid var(--border); display: flex; flex-direction: column;
+  touch-action: pan-y;
+  -webkit-overflow-scrolling: touch;
 }
 #checkout-modal.active { transform: translateX(0); }
 
@@ -282,6 +311,7 @@ nav {
   opacity: 0; visibility: hidden;
   padding-top: 80px;
   overscroll-behavior: contain;
+  touch-action: pan-y;
 }
 
 .pdp-content-wrapper {
@@ -391,145 +421,44 @@ footer {
 
 .footer-top { 
   display: grid; 
-  /* 4 Columns: Logo area is wider (1.5fr), others are equal */
   grid-template-columns: 1.5fr 1fr 1fr 1.2fr; 
   gap: 4rem; 
   padding-bottom: 4rem; 
   border-bottom: 1px solid var(--border); 
 }
 
-/* 1. Logo Sizing */
-.footer-logo {
-  max-width: 140px; 
-  height: auto; 
-  display: block; 
-  margin-bottom: 1.5rem;
-}
+.footer-logo { max-width: 140px; height: auto; display: block; margin-bottom: 1.5rem; }
+.footer-col h4 { font-size: 0.85rem; margin-bottom: 1.5rem; text-transform: uppercase; letter-spacing: 1.5px; color: #000; font-weight: 600; }
+.footer-col ul { list-style: none; }
+.footer-col ul li { margin-bottom: 0.8rem; }
+.footer-col ul li a { text-decoration: none; color: #666; font-size: 0.95rem; transition: color 0.3s ease, transform 0.3s ease; display: inline-block; }
+.footer-col ul li a:hover { color: #000; transform: translateX(5px); }
+.footer-desc { color: #666; font-size: 0.9rem; line-height: 1.6; margin-bottom: 1.5rem; max-width: 280px; }
+.footer-contact-item { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 1rem; color: #666; font-size: 0.95rem; }
+.footer-bottom { padding-top: 2rem; text-align: center; font-size: 0.8rem; color: #888; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
 
-/* 2. Column Headings */
-.footer-col h4 { 
-  font-size: 0.85rem; 
-  margin-bottom: 1.5rem; 
-  text-transform: uppercase;
-  letter-spacing: 1.5px; 
-  color: #000;
-  font-weight: 600;
-}
-
-/* 3. Links List */
-.footer-col ul { 
-  list-style: none; 
-  padding: 0; 
-  margin: 0; 
-}
-
-.footer-col ul li { 
-  margin-bottom: 0.8rem; 
-}
-
-.footer-col ul li a { 
-  text-decoration: none; 
-  color: #666; 
-  font-size: 0.95rem; 
-  transition: color 0.3s ease, transform 0.3s ease;
-  display: inline-block;
-}
-
-.footer-col ul li a:hover { 
-  color: #000; 
-  transform: translateX(5px); /* Subtle slide right on hover */
-}
-
-/* 4. Description Text */
-.footer-desc {
-  color: #666;
-  font-size: 0.9rem;
-  line-height: 1.6;
-  margin-bottom: 1.5rem;
-  max-width: 280px; /* Prevents text from stretching too wide */
-}
-
-/* 5. Contact Info Items */
-.footer-contact-item {
-  display: flex;
-  align-items: flex-start;
-  gap: 12px;
-  margin-bottom: 1rem;
-  color: #666;
-  font-size: 0.95rem;
-  line-height: 1.5;
-}
-.footer-contact-item span:first-child {
-  font-size: 1.1rem; /* Make emoji icons slightly larger */
-}
-
-/* 6. Footer Bottom Row */
-.footer-bottom { 
-  padding-top: 2rem; 
-  text-align: center; 
-  font-size: 0.8rem; 
-  color: #888; 
-  display: flex; 
-  justify-content: space-between; 
-  align-items: center;
-  flex-wrap: wrap; 
-  gap: 1rem; 
-}
-
-/* ============================
-   FIX: GIANT ICON & SOCIALS
-   ============================ */
-.footer-socials {
-  display: flex;
-  gap: 1rem;
-  margin-top: 1rem;
-}
-
-.social-link {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 40px;  /* Fixed circle size */
-  height: 40px; 
-  border-radius: 50%;
-  border: 1px solid #e5e5e5;
-  color: #555;
-  transition: all 0.3s ease;
-  text-decoration: none; /* No underlines */
-}
-
-/* CRITICAL FIX: Constrain SVG size */
-.social-link svg {
-  width: 18px; 
-  height: 18px;
-  stroke-width: 1.5px;
-}
-
-.social-link:hover {
-  background: #000;
-  border-color: #000;
-  color: #fff;
-  transform: translateY(-3px); /* Premium lift effect */
-}
+.footer-socials { display: flex; gap: 1rem; margin-top: 1rem; }
+.social-link { display: flex; align-items: center; justify-content: center; width: 40px; height: 40px; border-radius: 50%; border: 1px solid #e5e5e5; color: #555; transition: all 0.3s ease; text-decoration: none; }
+.social-link svg { width: 18px; height: 18px; stroke-width: 1.5px; }
+.social-link:hover { background: #000; border-color: #000; color: #fff; transform: translateY(-3px); }
 
 /* ============================
    RESPONSIVE FOOTER
    ============================ */
 @media (max-width: 900px) {
   .footer-top { 
-    grid-template-columns: 1fr 1fr; /* 2x2 grid on tablets */
+    grid-template-columns: 1fr 1fr; 
     gap: 3rem; 
   }
 }
 
 @media (max-width: 600px) {
   .footer-top { 
-    grid-template-columns: 1fr; /* Stack vertically on mobile */
+    grid-template-columns: 1fr; 
     gap: 2.5rem; 
     text-align: left;
   }
   
-
   .footer-desc { max-width: 100%; }
   
   .footer-bottom { 
@@ -541,31 +470,26 @@ footer {
 /* ============================
    SKELETON / WIREFRAME LOADING
    ============================ */
-
-/* The shimmering animation */
 @keyframes shimmer {
   0% { background-position: -200% 0; }
   100% { background-position: 200% 0; }
 }
 
-/* Apply this class to containers waiting for data/images */
 .skeleton {
   background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
   background-size: 200% 100%;
   animation: shimmer 1.5s infinite;
 }
 
-/* Image states */
 .product-card img {
-  opacity: 0; /* Hidden by default until loaded */
+  opacity: 0; 
   transition: opacity 0.6s ease, transform 0.6s ease;
 }
 
 .product-card img.img-loaded {
-  opacity: 1; /* Fade in when ready */
+  opacity: 1; 
 }
 
-/* Offline / Broken Image Placeholder */
 .offline-placeholder {
   width: 100%;
   height: 100%;
@@ -582,7 +506,6 @@ footer {
 
 /* =========================================
    ADDITION: MOBILE RESPONSIVE PATCH
-   (Appended to ensure premium layout on phones)
    ========================================= */
 
 @media (max-width: 900px) {
@@ -592,9 +515,9 @@ footer {
     gap: 1.5rem !important; 
   }
   
-  /* 2. Fix Product Detail Page (PDP) Layout */
+  /* 2. Fix Product Detail Page (PDP) Layout - STACK VERTICALLY */
   .pdp-grid { 
-    grid-template-columns: 1fr !important; /* Stack vertically */
+    grid-template-columns: 1fr !important; 
     gap: 2rem !important; 
     padding: 1rem !important; 
   }
@@ -609,14 +532,23 @@ footer {
     margin-top: 1rem; 
   }
   
-  /* 3. Sticky/Better Add to Cart Buttons */
+  /* 3. FIX: Quantity Selector & Add to Cart Layout */
   .pdp-actions { 
     flex-direction: column; 
     width: 100%; 
+    gap: 15px; /* Space between Quantity box and Add button */
   }
+
+  .qty-selector { 
+    width: 100%; /* Fill full width */
+    justify-content: space-between; /* Push - and + to the edges */
+    padding: 0 2rem; /* "Proper Paddings" inside the box */
+    box-sizing: border-box; /* Prevents box from extending beyond screen */
+  }
+
   .btn-atc { 
     width: 100%; 
-    padding: 1rem; 
+    padding: 1.2rem; 
   }
 }
 
@@ -631,5 +563,6 @@ footer {
   .modal-panel, #checkout-modal { 
     width: 100% !important; 
     padding: 1.5rem !important; 
+    padding-top: 90px !important; 
   }
 }

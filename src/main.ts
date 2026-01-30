@@ -18,13 +18,19 @@ new CheckoutManager(cart);
 // Animation Logic: Fly To Cart
 // =========================================
 const flyToCart = (startEl: HTMLElement, targetSelector: string, onComplete: () => void) => {
-  const targetEl = document.querySelector(targetSelector) as HTMLElement;
+  // 1. Try finding mobile cart trigger first if visible
+  let targetEl = document.querySelector('#mobile-cart-trigger') as HTMLElement;
+  
+  // 2. If mobile trigger isn't there or hidden, use desktop
+  if (!targetEl || getComputedStyle(targetEl).display === 'none') {
+     targetEl = document.querySelector(targetSelector) as HTMLElement;
+  }
+
   if (!startEl || !targetEl) {
     onComplete();
     return;
   }
 
-  // 1. Create Clone
   const rectStart = startEl.getBoundingClientRect();
   const rectTarget = targetEl.getBoundingClientRect();
   
@@ -41,28 +47,25 @@ const flyToCart = (startEl: HTMLElement, targetSelector: string, onComplete: () 
   clone.style.transition = 'none'; 
   document.body.appendChild(clone);
 
-  // 2. Animate
   const tl = gsap.timeline({
     onComplete: () => {
       clone.remove();
-      // Cart Bump Effect
       gsap.fromTo(targetEl, { scale: 1 }, { scale: 1.2, duration: 0.1, yoyo: true, repeat: 1 });
       onComplete();
     }
   });
 
-  // Calculate center-to-center delta
   const xDist = (rectTarget.left + rectTarget.width/2) - (rectStart.left + rectStart.width/2);
   const yDist = (rectTarget.top + rectTarget.height/2) - (rectStart.top + rectStart.height/2);
 
   tl.to(clone, {
     x: xDist,
     y: yDist,
-    width: 20, // Shrink to dot
+    width: 20,
     height: 20,
     opacity: 0,
     duration: 0.8,
-    ease: "power3.inOut" // Smooth acceleration/deceleration
+    ease: "power3.inOut"
   });
 };
 
@@ -70,26 +73,23 @@ const flyToCart = (startEl: HTMLElement, targetSelector: string, onComplete: () 
 // PDP Logic (Product Detail Page)
 // =========================================
 const showProductDetails = (product: Product) => {
-  let pdp = document.getElementById('pdp-view');
-  if (!pdp) {
-    pdp = document.createElement('div');
-    pdp.id = 'pdp-view';
-    pdp.className = 'pdp-container';
-    // CRITICAL: Allows scrolling inside PDP without body scroll interference
-    pdp.setAttribute('data-lenis-prevent', 'true');
-    document.body.appendChild(pdp);
-  }
-
-  // ADDED: Fix Back Button Logic (Browser History)
+  if (document.getElementById('pdp-view')) return;
+  
+  // Fix Back Button: Push state so browser back button closes PDP
   history.pushState({ pdpOpen: true, productId: product.id }, '', `#product/${product.id}`);
 
-  // Initial State
+  let pdp = document.createElement('div');
+  pdp.id = 'pdp-view';
+  pdp.className = 'pdp-container';
+  // CRITICAL: Allows scrolling inside PDP without body scroll interference
+  pdp.setAttribute('data-lenis-prevent', 'true');
+  document.body.appendChild(pdp);
+
   let selectedSize = product.sizes ? product.sizes[0] : 'M';
   let selectedColor = product.colors ? product.colors[0] : '#000';
   let currentImages = getImagesForColor(product, selectedColor);
   let qty = 1;
 
-  // Render Skeleton (Clean, no related products)
   pdp.innerHTML = `
     <div class="pdp-content-wrapper">
       <div class="pdp-grid">
@@ -97,8 +97,7 @@ const showProductDetails = (product: Product) => {
           <div class="pdp-main-frame">
              <img src="${currentImages[0]}" id="pdp-main-img">
           </div>
-          <div class="pdp-thumbs-row" id="pdp-thumbs-container">
-             </div>
+          <div class="pdp-thumbs-row" id="pdp-thumbs-container"></div>
         </div>
 
         <div class="pdp-details-col">
@@ -130,12 +129,9 @@ const showProductDetails = (product: Product) => {
     </div>
   `;
 
-  // --- Helpers ---
   function getImagesForColor(p: Product, color: string): string[] {
-    if (p.colorImages && p.colorImages[color]) {
-      return p.colorImages[color];
-    }
-    return [p.image]; // Fallback
+    if (p.colorImages && p.colorImages[color]) return p.colorImages[color];
+    return [p.image];
   }
 
   const renderThumbs = (images: string[]) => {
@@ -150,68 +146,41 @@ const showProductDetails = (product: Product) => {
   const renderOptions = () => {
     const colorContainer = document.getElementById('pdp-color-opts')!;
     const sizeContainer = document.getElementById('pdp-size-opts')!;
-
-    // Colors
-    colorContainer.innerHTML = (product.colors || []).map(c => `
-      <div class="color-btn ${c === selectedColor ? 'selected' : ''}" 
-           style="background:${c}" 
-           data-val="${c}"></div>
-    `).join('');
-
-    // Sizes
-    sizeContainer.innerHTML = (product.sizes || []).map(s => `
-      <div class="size-btn ${s === selectedSize ? 'selected' : ''}" 
-           data-val="${s}">${s}</div>
-    `).join('');
+    colorContainer.innerHTML = (product.colors || []).map(c => `<div class="color-btn ${c === selectedColor ? 'selected' : ''}" style="background:${c}" data-val="${c}"></div>`).join('');
+    sizeContainer.innerHTML = (product.sizes || []).map(s => `<div class="size-btn ${s === selectedSize ? 'selected' : ''}" data-val="${s}">${s}</div>`).join('');
   };
 
-  // --- Initialize UI ---
   renderThumbs(currentImages);
   renderOptions();
 
-  // --- Global Window Binding for inline onclicks ---
   (window as any).swapMainImage = (src: string, el: HTMLElement) => {
     const main = document.getElementById('pdp-main-img') as HTMLImageElement;
-    
-    // Crossfade animation
     gsap.to(main, { opacity: 0.5, duration: 0.2, onComplete: () => {
       main.src = src;
       gsap.to(main, { opacity: 1, duration: 0.2 });
     }});
-
     document.querySelectorAll('.pdp-thumb').forEach(t => t.classList.remove('active'));
     el.parentElement?.classList.add('active');
   };
 
-  // --- Event Listeners ---
-  
-  // Color Click
   document.getElementById('pdp-color-opts')?.addEventListener('click', (e) => {
     const target = e.target as HTMLElement;
     if (target.classList.contains('color-btn')) {
       const newColor = target.dataset.val!;
-      if (newColor === selectedColor) return; // No change
-
+      if (newColor === selectedColor) return; 
       selectedColor = newColor;
       document.getElementById('color-name')!.innerText = selectedColor;
-      
-      // Update UI selection
       renderOptions(); 
-
-      // Update Images
       const newImages = getImagesForColor(product, selectedColor);
-      
-      // Fade out main image, swap, fade in
       const mainImg = document.getElementById('pdp-main-img') as HTMLImageElement;
       gsap.to(mainImg, { opacity: 0, duration: 0.3, onComplete: () => {
         mainImg.src = newImages[0];
-        renderThumbs(newImages); // Re-render thumbs
+        renderThumbs(newImages); 
         gsap.to(mainImg, { opacity: 1, duration: 0.3 });
       }});
     }
   });
 
-  // Size Click
   document.getElementById('pdp-size-opts')?.addEventListener('click', (e) => {
     const target = e.target as HTMLElement;
     if (target.classList.contains('size-btn')) {
@@ -221,27 +190,19 @@ const showProductDetails = (product: Product) => {
     }
   });
 
-  // Quantity
   const qtyInput = document.getElementById('pdp-qty') as HTMLInputElement;
   document.getElementById('pdp-inc')?.addEventListener('click', () => { qty++; qtyInput.value = qty.toString(); });
   document.getElementById('pdp-dec')?.addEventListener('click', () => { if(qty>1) qty--; qtyInput.value = qty.toString(); });
 
-  // Add to Cart with Animation
   document.getElementById('pdp-add')?.addEventListener('click', () => {
     const mainImg = document.getElementById('pdp-main-img') as HTMLElement;
-    
-    // Fly animation to cart trigger
     flyToCart(mainImg, '#cart-trigger', () => {
       cart.add(product, qty, selectedSize, selectedColor);
-      // ADDED: Close using history to keep state clean
-      history.back();
+      history.back(); // Go back to shop after adding
     });
   });
 
-  // --- ENTRANCE ANIMATION ---
   gsap.to(pdp, { autoAlpha: 1, duration: 0.4 });
-  
-  // Stagger Text & Elements
   gsap.fromTo('.intro-anim', 
     { y: 30, opacity: 0 },
     { y: 0, opacity: 1, duration: 0.8, stagger: 0.1, ease: 'power3.out', delay: 0.2 }
@@ -254,31 +215,72 @@ const closeProductDetails = () => {
     gsap.to(pdp, { 
       autoAlpha: 0, 
       duration: 0.3, 
-      onComplete: () => pdp.remove() // Completely remove to reset state
+      onComplete: () => pdp.remove() 
     });
   }
 };
 
-// ADDED: Global Listener for Browser Back Button
 window.addEventListener('popstate', (event) => {
-  // If we are going back to a state without 'pdpOpen', we close the modal
   if (!event.state || !event.state.pdpOpen) {
     closeProductDetails();
   }
 });
 
 // =========================================
+// HELPER: Inject Mobile Cart Icon
+// =========================================
+const injectMobileCartIcon = () => {
+  const nav = document.querySelector('nav');
+  if (!nav) return;
+  
+  // Only inject if it doesn't exist
+  if (!document.getElementById('mobile-cart-trigger')) {
+    const div = document.createElement('div');
+    div.id = 'mobile-cart-trigger';
+    div.style.cssText = "position: relative; padding: 10px; cursor: pointer;";
+    div.innerHTML = `
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="9" cy="21" r="1"></circle>
+        <circle cx="20" cy="21" r="1"></circle>
+        <path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
+      </svg>
+      <span id="mobile-cart-count" style="position: absolute; top: 0; right: 0; background: black; color: white; font-size: 10px; width: 16px; height: 16px; display: flex; align-items: center; justify-content: center; border-radius: 50%;">0</span>
+    `;
+    
+    const mobileToggle = document.querySelector('.mobile-toggle');
+    if (mobileToggle) {
+      nav.insertBefore(div, mobileToggle);
+    } else {
+      nav.appendChild(div);
+    }
+
+    // FIX: Toggle Logic for Mobile Cart Icon
+    div.addEventListener('click', (e) => {
+      e.preventDefault();
+      const sidebar = document.getElementById('cart-sidebar');
+      const overlay = document.querySelector('.overlay');
+      
+      if (sidebar && sidebar.classList.contains('active')) {
+         sidebar.classList.remove('active');
+         if(overlay) overlay.classList.remove('active');
+      } else {
+         if(sidebar) sidebar.classList.add('active');
+         if(overlay) overlay.classList.add('active');
+      }
+    });
+  }
+};
+
+// =========================================
 // Main Init
 // =========================================
 const initPage = (container: Document | HTMLElement = document) => {
   initScroll();
-  initFooter(); // Inject the universal footer
+  initFooter(); 
+  injectMobileCartIcon(); // Inject Icon
   
   const shopContainer = container.querySelector('#shop-container');
   if (shopContainer) {
-    // ------------------------------------------
-    // UPDATED: Render Grid with Wireframe/Skeleton
-    // ------------------------------------------
     shopContainer.innerHTML = products.map(p => `
       <div class="product-card" data-id="${p.id}" style="cursor: pointer;">
         <div class="img-wrapper skeleton" style="overflow:hidden; height: 450px; background-color: #f4f4f4; position: relative;">
@@ -291,73 +293,61 @@ const initPage = (container: Document | HTMLElement = document) => {
       </div>
     `).join('');
     
-    // Attach Load/Error Handlers to images for skeleton logic
     const images = shopContainer.querySelectorAll('.product-img-load');
     images.forEach((img: any) => {
-      // 1. Success: Fade in and remove skeleton
-      img.onload = () => {
-        img.classList.add('img-loaded');
-        img.parentElement?.classList.remove('skeleton');
-      };
-
-      // 2. Error (No Internet): Remove skeleton, show offline message
-      img.onerror = () => {
-        const parent = img.parentElement;
-        if (parent) {
-          parent.classList.remove('skeleton');
-          parent.innerHTML = `
-            <div class="offline-placeholder">
-              <span>⚠️ Image N/A</span>
-              <span style="font-size:0.6rem; margin-top:5px;">Offline</span>
-            </div>
-          `;
-        }
-      };
-
-      // Check if cached/already loaded
-      if (img.complete && img.naturalHeight !== 0) {
-        img.classList.add('img-loaded');
-        img.parentElement?.classList.remove('skeleton');
-      }
+      img.onload = () => { img.classList.add('img-loaded'); img.parentElement?.classList.remove('skeleton'); };
+      img.onerror = () => { const p = img.parentElement; if(p) { p.classList.remove('skeleton'); p.innerHTML = '<div class="offline-placeholder"><span>⚠️ Image N/A</span></div>'; } };
+      if (img.complete && img.naturalHeight !== 0) { img.classList.add('img-loaded'); img.parentElement?.classList.remove('skeleton'); }
     });
-    // ------------------------------------------
-    // END UPDATED RENDER
-    // ------------------------------------------
     
-    // Grid Click Event -> Open PDP
     shopContainer.addEventListener('click', (e: Event) => {
       const card = (e.target as HTMLElement).closest('.product-card') as HTMLElement;
       if (card) {
-        const id = card.dataset.id;
-        const product = products.find(p => p.id === id);
+        const product = products.find(p => p.id === card.dataset.id);
         if (product) showProductDetails(product);
       }
     });
   }
 
-  // Mobile Menu Logic
   const mobileToggle = document.querySelector('.mobile-toggle');
   const navLinks = document.querySelector('.nav-links');
+  
   if (mobileToggle && navLinks) {
     const newToggle = mobileToggle.cloneNode(true) as HTMLElement;
     mobileToggle.parentNode?.replaceChild(newToggle, mobileToggle);
+    
     newToggle.addEventListener('click', () => {
       newToggle.classList.toggle('active');
       navLinks.classList.toggle('active');
     });
+
+    // FIX: Close hamburger menu when a link is clicked
+    navLinks.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        newToggle.classList.remove('active');
+        navLinks.classList.remove('active');
+      });
+    });
   }
 
-  // Cart Trigger Logic
+  // FIX: Desktop Cart Toggle Logic
   const cartTrigger = document.getElementById('cart-trigger');
   if (cartTrigger) {
     cartTrigger.onclick = (e) => {
       e.preventDefault();
-      document.getElementById('cart-sidebar')?.classList.add('active');
-      document.querySelector('.overlay')?.classList.add('active');
+      const sidebar = document.getElementById('cart-sidebar');
+      const overlay = document.querySelector('.overlay');
+      
+      if (sidebar && sidebar.classList.contains('active')) {
+         sidebar.classList.remove('active');
+         if(overlay) overlay.classList.remove('active');
+      } else {
+         if(sidebar) sidebar.classList.add('active');
+         if(overlay) overlay.classList.add('active');
+      }
     };
   }
 
-  // Close Logic (Overlay, Close Buttons)
   const closeElements = document.querySelectorAll('.btn-close-cart, .overlay, #close-checkout');
   closeElements.forEach(el => {
     el.addEventListener('click', () => {
@@ -367,22 +357,15 @@ const initPage = (container: Document | HTMLElement = document) => {
   });
 };
 
-// Barba Page Transitions
 barba.init({
   sync: true, 
   transitions: [{
     name: 'fade',
-    async leave(data: any) {
-      return gsap.to(data.current.container, { opacity: 0, duration: 0.5 });
-    },
-    enter(data: any) {
-      initPage(data.next.container);
-      return gsap.from(data.next.container, { opacity: 0, duration: 0.5 });
-    }
+    async leave(data: any) { return gsap.to(data.current.container, { opacity: 0, duration: 0.5 }); },
+    enter(data: any) { initPage(data.next.container); return gsap.from(data.next.container, { opacity: 0, duration: 0.5 }); }
   }]
 });
 
-// Initial Load
 if (document.readyState === 'loading') {
   document.addEventListener('DOMContentLoaded', () => initPage(document));
 } else {
