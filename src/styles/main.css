@@ -1,11 +1,21 @@
 @import url('https://fonts.googleapis.com/css2?family=Italiana&family=Manrope:wght@300;400;600&display=swap');
 
+/* Register Custom Font */
+@font-face {
+  font-family: 'Suissnord';
+  src: url('/Suissnord%20Deux%20D.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+  font-display: swap;
+}
+
 :root {
   --bg: #ffffff;
   --text: #111111;
   --accent: #f4f4f4;
   --border: #e5e5e5;
   --font-display: 'Italiana', serif;
+  --font-hero: 'Suissnord', serif; /* New variable for Hero */
   --font-body: 'Manrope', sans-serif;
   --gold: #D4AF37;
 }
@@ -133,7 +143,12 @@ nav {
   color: #ffffff;
 }
 
-.hero h1, .hero p { color: #ffffff; }
+/* UPDATED: Use the new custom font for the Hero heading */
+.hero h1 { 
+  font-family: var(--font-hero);
+  color: #ffffff; 
+}
+.hero p { color: #ffffff; }
 .hero .btn { border-color: #ffffff; color: #ffffff; }
 .hero .btn:hover { background: #ffffff; color: #000000; }
 
@@ -235,6 +250,8 @@ nav {
 
 .modal-panel { position: fixed; top: 0; right: 0; width: 450px; max-width: 100%; height: 100vh; background: white; transform: translateX(100%); transition: transform 0.6s cubic-bezier(0.2, 1, 0.3, 1); z-index: 200; padding: 2rem; display: flex; flex-direction: column; border-left: 1px solid var(--border); overflow-y: auto; }
 .modal-panel.active { transform: translateX(0); }
+
+
 
 .cart-item { display: flex; justify-content: space-between; align-items: center; padding-bottom: 1rem; margin-bottom: 1rem; border-bottom: 1px solid #eee; }
 .cart-qty-ctrl { display: flex; align-items: center; gap: 5px; border: 1px solid #eee; }

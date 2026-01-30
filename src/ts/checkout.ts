@@ -8,6 +8,11 @@ export class CheckoutManager {
   constructor(cart: CartManager) {
     this.cart = cart;
     this.modal = document.getElementById('checkout-modal')!;
+    
+    // FIX: This attribute tells Lenis to ignore scrolling inside this modal
+    // ensuring the mouse wheel works perfectly here.
+    this.modal.setAttribute('data-lenis-prevent', 'true');
+    
     this.bindEvents();
   }
 
@@ -16,7 +21,7 @@ export class CheckoutManager {
     (document.getElementById('order-id-display') as HTMLElement).innerText = this.orderId;
     this.renderSummary();
     this.modal.classList.add('active');
-    document.getElementById('cart-sidebar')?.classList.remove('active'); // Close cart
+    document.getElementById('cart-sidebar')?.classList.remove('active');
   }
 
   renderSummary() {
@@ -35,13 +40,11 @@ export class CheckoutManager {
     document.getElementById('trigger-checkout')?.addEventListener('click', () => this.open());
     document.getElementById('close-checkout')?.addEventListener('click', () => this.modal.classList.remove('active'));
     
-    // WhatsApp Send
     document.getElementById('checkout-form')?.addEventListener('submit', (e) => {
       e.preventDefault();
       this.sendWhatsApp();
     });
 
-    // Print
     document.getElementById('print-order')?.addEventListener('click', () => {
       window.print();
     });

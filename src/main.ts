@@ -13,16 +13,12 @@ const cart = new CartManager();
 window.cart = cart; 
 new CheckoutManager(cart);
 
-// =========================================
-// Page Initialization Logic
-// =========================================
 const initPage = (container: Document | HTMLElement = document) => {
   initScroll();
   
-  // 1. Mobile Menu Logic (Fixed Overlay Issue)
+  // 1. Mobile Menu Logic
   const mobileToggle = document.querySelector('.mobile-toggle');
   const navLinks = document.querySelector('.nav-links');
-  const overlay = document.querySelector('.overlay');
 
   if (mobileToggle && navLinks) {
     const newToggle = mobileToggle.cloneNode(true) as HTMLElement;
@@ -31,7 +27,6 @@ const initPage = (container: Document | HTMLElement = document) => {
     newToggle.addEventListener('click', () => {
       newToggle.classList.toggle('active');
       navLinks.classList.toggle('active');
-      // No overlay toggle for menu to keep it clean, only menu slides in
     });
 
     navLinks.querySelectorAll('a').forEach(link => {
@@ -47,14 +42,11 @@ const initPage = (container: Document | HTMLElement = document) => {
   if (shopContainer) {
     renderGrid(products, shopContainer as HTMLElement);
     
-    // 3. Bind Grid Events (Quantity +/- and Add)
-    // We bind to the container to catch clicks on any card
     shopContainer.addEventListener('click', (e: Event) => {
       const target = e.target as HTMLElement;
       
-      // Handle +/- Buttons
       if (target.classList.contains('qty-btn-grid')) {
-        const action = target.dataset.action; // 'inc' or 'dec'
+        const action = target.dataset.action; 
         const input = target.parentElement?.querySelector('.qty-input') as HTMLInputElement;
         
         if (input) {
@@ -65,10 +57,8 @@ const initPage = (container: Document | HTMLElement = document) => {
         }
       }
 
-      // Handle Add To Cart Button
       if (target.classList.contains('add-btn')) {
         const id = target.dataset.id;
-        // Find the quantity input in the same card
         const card = target.closest('.product-card');
         const input = card?.querySelector('.qty-input') as HTMLInputElement;
         const qty = input ? parseInt(input.value) : 1;
@@ -97,21 +87,28 @@ const initPage = (container: Document | HTMLElement = document) => {
 
   // 5. Cart & Modals
   const cartTrigger = document.getElementById('cart-trigger');
+  const cartSidebar = document.getElementById('cart-sidebar');
+
+  // FIX: Ensure Cart Sidebar also allows normal scrolling
+  if (cartSidebar) {
+    cartSidebar.setAttribute('data-lenis-prevent', 'true');
+  }
+
   if (cartTrigger) {
     cartTrigger.onclick = (e) => {
       e.preventDefault();
-      document.getElementById('cart-sidebar')?.classList.add('active');
+      cartSidebar?.classList.add('active');
       document.querySelector('.overlay')?.classList.add('active');
-      
       document.querySelector('.nav-links')?.classList.remove('active');
       document.querySelector('.mobile-toggle')?.classList.remove('active');
+      // No stopScroll() needed now
     };
   }
 
   const closeElements = document.querySelectorAll('.btn-close-cart, .overlay, #close-checkout');
   closeElements.forEach(el => {
     el.addEventListener('click', () => {
-      document.querySelectorAll('.modal-panel, .overlay, .nav-links').forEach(m => m.classList.remove('active'));
+      document.querySelectorAll('.modal-panel, .overlay, .nav-links, #checkout-modal').forEach(m => m.classList.remove('active'));
       document.querySelector('.mobile-toggle')?.classList.remove('active');
     });
   });
