@@ -289,8 +289,11 @@ const injectMobileCartIcon = () => {
 // =========================================
 const initPage = (container: Document | HTMLElement = document) => {
   initScroll();
-  initFooter(); 
-  injectMobileCartIcon(); 
+  
+  // FIX: Pass the specific container to initFooter
+  initFooter(container); 
+  
+  injectMobileCartIcon();
   
   const shopContainer = container.querySelector('#shop-container');
   if (shopContainer) {
@@ -407,8 +410,13 @@ barba.init({
   sync: true, 
   transitions: [{
     name: 'fade',
-    async leave(data: any) { return gsap.to(data.current.container, { opacity: 0, duration: 0.5 }); },
-    enter(data: any) { initPage(data.next.container); return gsap.from(data.next.container, { opacity: 0, duration: 0.5 }); }
+    async leave(data: any) {
+      return gsap.to(data.current.container, { opacity: 0, duration: 0.5 });
+    },
+    enter(data: any) {
+      initPage(data.next.container);
+      return gsap.from(data.next.container, { opacity: 0, duration: 0.5 });
+    }
   }]
 });
 
